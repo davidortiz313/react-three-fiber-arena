@@ -9,11 +9,18 @@ export const Environment: React.FC = () => {
             <EnvironmentLoader
                 background={false}
                 path={"./assets/HDRI/"}
-                files={"small.hdr"}
+                files={"royal.hdr"}
+                // files={"small.hdr"}
             />
-            <ambientLight intensity={2} />
+            <ambientLight intensity={1} />
             <directionalLight position={[3, 5, -3]} intensity={0.6} />
-            <OrbitControls enableDamping={false} />
+            <OrbitControls
+                enableZoom={false}
+                enablePan={false}
+                minAzimuthAngle={3}
+                minPolarAngle={Math.PI / 2}
+                maxPolarAngle={Math.PI}
+            />
         </React.Fragment>
     );
 };
