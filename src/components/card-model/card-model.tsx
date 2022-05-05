@@ -16,6 +16,7 @@ import {
 export const CardModel: React.FC = () => {
     const modelRef = useRef();
     const gltf = useLoader(GLTFLoader, "./assets/glTF/test.glb");
+    const animGltf = useLoader(GLTFLoader, "./assets/glTF/anim.gltf");
 
     const [frontMap, backMap, frontTopMap, backTopMap] = useLoader(
         TextureLoader,
@@ -34,22 +35,29 @@ export const CardModel: React.FC = () => {
     const mixerRef = useRef<AnimationMixer | null>(null);
 
     useEffect(() => {
-        const { animations, scene } = gltf;
+        const { animations, scene } = animGltf;
         mixerRef.current = new AnimationMixer(scene);
-        // animations.forEach((clip) => {
-        //     const action = mixerRef.current!.clipAction(clip);
-        //     action.play();
-        //     action.timeScale = 0.2;
-        // });
-    }, [gltf]);
+
+        animations.forEach((clip) => {
+            const action = mixerRef.current!.clipAction(clip);
+            action.play();
+            action.timeScale = 0.8;
+        });
+    }, [gltf, animGltf]);
 
     useFrame((_, delta) => {
-        // if (!mixerRef.current) return;
-        // mixerRef.current.update(delta);
+        if (!mixerRef.current) return;
 
-        if (!modelRef.current) return;
+        mixerRef.current.update(delta);
+        if (!modelRef.current || !animGltf) return;
+
         const model = modelRef.current as Mesh;
-        model.rotation.y += delta / 2;
+
+        const animObj = animGltf.scene.children[0] as Mesh;
+
+        model.position.copy(animObj.position);
+        model.rotation.copy(animObj.rotation);
+        // model.rotation.y += delta / 2;
     });
 
     const model = useMemo(() => {
@@ -64,6 +72,7 @@ export const CardModel: React.FC = () => {
     return (
         <Suspense fallback={null}>
             <group>
+                <primitive object={animGltf.scene} />
                 <primitive ref={modelRef} object={model} scale={0.1}>
                     <mesh name="Front Image" position={[0, -1.2, 0.01]}>
                         <planeGeometry args={[6.2, 8.9]} />
