@@ -17,9 +17,6 @@ export const Environment: React.FC = () => {
                 enableZoom={false}
                 enablePan={false}
                 enableRotate={false}
-                minAzimuthAngle={3}
-                minPolarAngle={Math.PI / 2}
-                maxPolarAngle={Math.PI}
             />
         </React.Fragment>
     );

@@ -15,10 +15,9 @@ import {
 
 export const CardModel: React.FC = () => {
     const modelRef = useRef();
-    const gltf = useLoader(GLTFLoader, "./assets/glTF/test.glb");
-    const animGltf = useLoader(GLTFLoader, "./assets/glTF/anim.gltf");
+    const animGltf = useLoader(GLTFLoader, "./assets/glTF/anim4.gltf");
 
-    const [frontMap, backMap, frontTopMap, backTopMap] = useLoader(
+    const [cardFrontMap, cardBackMap, labelFrontMap, labelBackMap] = useLoader(
         TextureLoader,
         [
             "./assets/front.jpg",
@@ -27,54 +26,70 @@ export const CardModel: React.FC = () => {
             "./assets/backTop.png",
         ]
     );
-    frontMap.encoding = sRGBEncoding;
-    backMap.encoding = sRGBEncoding;
-    frontTopMap.encoding = sRGBEncoding;
-    backTopMap.encoding = sRGBEncoding;
+    cardFrontMap.encoding = sRGBEncoding;
+    cardBackMap.encoding = sRGBEncoding;
+    labelFrontMap.encoding = sRGBEncoding;
+    labelBackMap.encoding = sRGBEncoding;
+    cardFrontMap.flipY = false;
+    cardBackMap.flipY = false;
+    labelFrontMap.flipY = false;
+    labelBackMap.flipY = false;
 
     const mixerRef = useRef<AnimationMixer | null>(null);
 
-    useEffect(() => {
-        const { animations, scene } = animGltf;
-        mixerRef.current = new AnimationMixer(scene);
-
-        animations.forEach((clip) => {
-            const action = mixerRef.current!.clipAction(clip);
-            action.play();
-            action.timeScale = 0.8;
-        });
-    }, [gltf, animGltf]);
-
     useFrame((_, delta) => {
-        if (!mixerRef.current) return;
-
+        if (!mixerRef.current || !modelRef.current || !animGltf) return;
         mixerRef.current.update(delta);
-        if (!modelRef.current || !animGltf) return;
-
-        const model = modelRef.current as Mesh;
-
-        const animObj = animGltf.scene.children[0] as Mesh;
-
-        model.position.copy(animObj.position);
-        model.rotation.copy(animObj.rotation);
-        // model.rotation.y += delta / 2;
     });
 
     const model = useMemo(() => {
-        gltf.scene.traverse((child) => {
+        const { animations, scene } = animGltf;
+        mixerRef.current = new AnimationMixer(scene);
+
+        const action = mixerRef.current!.clipAction(animations[0]);
+        action.play();
+
+        animGltf.scene.traverse((child) => {
             if (child instanceof Mesh) {
-                (child.material as MeshStandardMaterial).opacity = 0.2;
+                switch (child.name) {
+                    case "card_front":
+                        child.material = new MeshStandardMaterial({
+                            map: cardFrontMap,
+                        });
+                        break;
+                    case "card_back":
+                        child.material = new MeshStandardMaterial({
+                            map: cardBackMap,
+                        });
+                        break;
+                    case "label-front":
+                        child.material = new MeshStandardMaterial({
+                            map: labelFrontMap,
+                            transparent: true,
+                        });
+                        break;
+                    case "label-back":
+                        child.material = new MeshStandardMaterial({
+                            map: labelBackMap,
+                            transparent: true,
+                        });
+                        break;
+                    default:
+                        (child.material as MeshStandardMaterial).opacity = 0.1;
+                        break;
+                }
             }
         });
-        return gltf.scene;
-    }, [gltf]);
+        console.log(animGltf.scene);
+        return animGltf.scene;
+    }, [animGltf]);
 
     return (
         <Suspense fallback={null}>
             <group>
                 <primitive object={animGltf.scene} />
                 <primitive ref={modelRef} object={model} scale={0.1}>
-                    <mesh name="Front Image" position={[0, -1.2, 0.01]}>
+                    {/* <mesh name="Front Image" position={[0, -1.2, 0.01]}>
                         <planeGeometry args={[6.2, 8.9]} />
                         <meshStandardMaterial map={frontMap} roughness={0.1} />
                     </mesh>
@@ -108,7 +123,7 @@ export const CardModel: React.FC = () => {
                             transparent={true}
                             opacity={1}
                         />
-                    </mesh>
+                    </mesh> */}
                 </primitive>
             </group>
         </Suspense>

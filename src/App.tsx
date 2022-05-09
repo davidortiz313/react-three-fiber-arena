@@ -10,7 +10,6 @@ const App: React.FC = () => {
     return (
         <Canvas
             gl={{
-                powerPreference: "high-performance",
                 antialias: true,
                 depth: true,
                 alpha: false,
