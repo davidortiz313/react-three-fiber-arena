@@ -30,7 +30,8 @@ export const CardModel: React.FC = () => {
     const model = useMemo(() => {
         gltf.scene.traverse((child) => {
             if (child instanceof Mesh) {
-                (child.material as MeshStandardMaterial).opacity = 0.2;
+                const mat = child.material as MeshStandardMaterial;
+                mat.opacity = 0.1;
             }
         });
         return gltf.scene;

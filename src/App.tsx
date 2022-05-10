@@ -2,7 +2,7 @@ import React from "react";
 import { Canvas } from "@react-three/fiber";
 import { CardModel } from "./components/card-model/card-model";
 import { Environment } from "./components/environment/environment";
-import { Color, sRGBEncoding } from "three";
+import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
 // import { KernelSize } from "postprocessing";
 // import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
@@ -19,7 +19,8 @@ const App: React.FC = () => {
             onCreated={({ gl, scene }) => {
                 scene.background = new Color(0xf6f6f6);
                 gl.outputEncoding = sRGBEncoding;
-                gl.toneMappingExposure = 2.5;
+                gl.toneMapping = ACESFilmicToneMapping;
+                gl.toneMappingExposure = 1.5;
             }}
         >
             <Environment />
