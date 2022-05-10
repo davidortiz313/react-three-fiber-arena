@@ -32,7 +32,7 @@ export const CardModel: React.FC = () => {
             if (child instanceof Mesh) {
                 const mat = child.material as MeshStandardMaterial;
                 mat.roughness = 0.01;
-                mat.opacity = 0.3;
+                mat.opacity = 0.2;
             }
         });
         return gltf.scene;
@@ -44,7 +44,11 @@ export const CardModel: React.FC = () => {
                 <primitive ref={modelRef} object={model} scale={0.1}>
                     <mesh name="Front Image" position={[0, -1.2, 0.01]}>
                         <planeGeometry args={[6.2, 8.9]} />
-                        <meshStandardMaterial map={frontMap} />
+                        <meshStandardMaterial
+                            map={frontMap}
+                            roughness={0.3}
+                            metalness={0.7}
+                        />
                     </mesh>
 
                     <mesh
@@ -53,7 +57,11 @@ export const CardModel: React.FC = () => {
                         rotation-y={-Math.PI}
                     >
                         <planeGeometry args={[6.2, 8.9]} />
-                        <meshStandardMaterial map={backMap} />
+                        <meshStandardMaterial
+                            map={backMap}
+                            roughness={0.3}
+                            metalness={0.7}
+                        />
                     </mesh>
 
                     <mesh name="Front Top" position={[0, 4.85, 0.1]}>
@@ -61,6 +69,8 @@ export const CardModel: React.FC = () => {
                         <meshStandardMaterial
                             map={frontTopMap}
                             transparent={true}
+                            roughness={0.3}
+                            metalness={0.7}
                         />
                     </mesh>
 
@@ -73,6 +83,8 @@ export const CardModel: React.FC = () => {
                         <meshStandardMaterial
                             map={backTopMap}
                             transparent={true}
+                            roughness={0.3}
+                            metalness={0.7}
                         />
                     </mesh>
                 </primitive>
