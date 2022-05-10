@@ -17,7 +17,7 @@ const App: React.FC = () => {
             }}
             camera={{ fov: 45, position: [0, 0, 2.5] }}
             onCreated={({ gl, scene }) => {
-                scene.background = new Color(0xf6f6f6);
+                scene.background = new Color(0xffffff);
                 gl.outputEncoding = sRGBEncoding;
                 gl.toneMapping = ACESFilmicToneMapping;
                 gl.toneMappingExposure = 1.5;

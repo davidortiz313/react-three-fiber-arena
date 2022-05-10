@@ -11,6 +11,7 @@ export const Environment: React.FC = () => {
                 files={"env.hdr"}
             />
             <ambientLight intensity={2} />
+            <directionalLight intensity={2} position={[3, 3, 3]} />
 
             <OrbitControls
                 enableRotate={false}

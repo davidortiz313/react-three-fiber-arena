@@ -31,7 +31,8 @@ export const CardModel: React.FC = () => {
         gltf.scene.traverse((child) => {
             if (child instanceof Mesh) {
                 const mat = child.material as MeshStandardMaterial;
-                mat.opacity = 0.1;
+                mat.roughness = 0.01;
+                mat.opacity = 0.3;
             }
         });
         return gltf.scene;
@@ -43,11 +44,7 @@ export const CardModel: React.FC = () => {
                 <primitive ref={modelRef} object={model} scale={0.1}>
                     <mesh name="Front Image" position={[0, -1.2, 0.01]}>
                         <planeGeometry args={[6.2, 8.9]} />
-                        <meshStandardMaterial
-                            map={frontMap}
-                            roughness={0.1}
-                            metalness={0.7}
-                        />
+                        <meshStandardMaterial map={frontMap} />
                     </mesh>
 
                     <mesh
@@ -56,11 +53,7 @@ export const CardModel: React.FC = () => {
                         rotation-y={-Math.PI}
                     >
                         <planeGeometry args={[6.2, 8.9]} />
-                        <meshStandardMaterial
-                            map={backMap}
-                            roughness={0.1}
-                            metalness={0.7}
-                        />
+                        <meshStandardMaterial map={backMap} />
                     </mesh>
 
                     <mesh name="Front Top" position={[0, 4.85, 0.1]}>
@@ -68,9 +61,6 @@ export const CardModel: React.FC = () => {
                         <meshStandardMaterial
                             map={frontTopMap}
                             transparent={true}
-                            opacity={0.8}
-                            roughness={0.1}
-                            metalness={0.9}
                         />
                     </mesh>
 
@@ -83,9 +73,6 @@ export const CardModel: React.FC = () => {
                         <meshStandardMaterial
                             map={backTopMap}
                             transparent={true}
-                            opacity={0.8}
-                            roughness={0.1}
-                            metalness={0.9}
                         />
                     </mesh>
                 </primitive>
