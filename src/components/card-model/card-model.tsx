@@ -3,11 +3,7 @@ import { useFrame, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {
     AnimationMixer,
-    BackSide,
-    Color,
-    FrontSide,
     Mesh,
-    MeshBasicMaterial,
     MeshStandardMaterial,
     sRGBEncoding,
     TextureLoader,
@@ -31,22 +27,7 @@ export const CardModel: React.FC = () => {
     frontTopMap.encoding = sRGBEncoding;
     backTopMap.encoding = sRGBEncoding;
 
-    const mixerRef = useRef<AnimationMixer | null>(null);
-
-    useEffect(() => {
-        const { animations, scene } = gltf;
-        mixerRef.current = new AnimationMixer(scene);
-        // animations.forEach((clip) => {
-        //     const action = mixerRef.current!.clipAction(clip);
-        //     action.play();
-        //     action.timeScale = 0.2;
-        // });
-    }, [gltf]);
-
     useFrame((_, delta) => {
-        // if (!mixerRef.current) return;
-        // mixerRef.current.update(delta);
-
         if (!modelRef.current) return;
         const model = modelRef.current as Mesh;
         model.rotation.y += delta / 2;
@@ -67,7 +48,11 @@ export const CardModel: React.FC = () => {
                 <primitive ref={modelRef} object={model} scale={0.1}>
                     <mesh name="Front Image" position={[0, -1.2, 0.01]}>
                         <planeGeometry args={[6.2, 8.9]} />
-                        <meshStandardMaterial map={frontMap} roughness={0.1} />
+                        <meshStandardMaterial
+                            map={frontMap}
+                            roughness={0.1}
+                            metalness={0.7}
+                        />
                     </mesh>
 
                     <mesh
@@ -76,15 +61,19 @@ export const CardModel: React.FC = () => {
                         rotation-y={-Math.PI}
                     >
                         <planeGeometry args={[6.2, 8.9]} />
-                        <meshStandardMaterial map={backMap} />
+                        <meshStandardMaterial
+                            map={backMap}
+                            roughness={0.1}
+                            metalness={0.7}
+                        />
                     </mesh>
 
                     <mesh name="Front Top" position={[0, 4.85, 0.1]}>
                         <planeGeometry args={[6.7, 1.9]} />
-                        <meshBasicMaterial
+                        <meshStandardMaterial
                             map={frontTopMap}
                             transparent={true}
-                            opacity={1}
+                            opacity={0.6}
                         />
                     </mesh>
 
@@ -94,10 +83,10 @@ export const CardModel: React.FC = () => {
                         rotation-y={-Math.PI}
                     >
                         <planeGeometry args={[6.7, 1.9]} />
-                        <meshBasicMaterial
+                        <meshStandardMaterial
                             map={backTopMap}
                             transparent={true}
-                            opacity={1}
+                            opacity={0.6}
                         />
                     </mesh>
                 </primitive>

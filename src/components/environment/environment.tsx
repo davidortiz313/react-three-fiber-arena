@@ -5,16 +5,14 @@ import { Environment as EnvironmentLoader } from "@react-three/drei";
 export const Environment: React.FC = () => {
     return (
         <React.Fragment>
-            {/* <axesHelper args={[0.1]} /> */}
             <EnvironmentLoader
                 background={false}
                 path={"./assets/HDRI/"}
-                files={"royal.hdr"}
-                // files={"small.hdr"}
+                files={"env.hdr"}
             />
-            <ambientLight intensity={1} />
-            <directionalLight position={[3, 5, -3]} intensity={0.6} />
+            <ambientLight intensity={2} />
             <OrbitControls
+                enableRotate={false}
                 enableZoom={false}
                 enablePan={false}
                 minAzimuthAngle={3}

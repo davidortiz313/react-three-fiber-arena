@@ -2,15 +2,14 @@ import React from "react";
 import { Canvas } from "@react-three/fiber";
 import { CardModel } from "./components/card-model/card-model";
 import { Environment } from "./components/environment/environment";
-import { Color } from "three";
-import { KernelSize } from "postprocessing";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { Color, sRGBEncoding } from "three";
+// import { KernelSize } from "postprocessing";
+// import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 const App: React.FC = () => {
     return (
         <Canvas
             gl={{
-                powerPreference: "high-performance",
                 antialias: true,
                 depth: true,
                 alpha: false,
@@ -19,7 +18,8 @@ const App: React.FC = () => {
             camera={{ fov: 45, position: [0, 0, 2.5] }}
             onCreated={({ gl, scene }) => {
                 scene.background = new Color(0xf6f6f6);
-                // gl.toneMappingExposure = 1.5;
+                gl.outputEncoding = sRGBEncoding;
+                gl.toneMappingExposure = 2.5;
             }}
         >
             <Environment />
@@ -29,8 +29,8 @@ const App: React.FC = () => {
                 <Bloom
                     kernelSize={3}
                     luminanceThreshold={0}
-                    luminanceSmoothing={0.4}
-                    intensity={0.6}
+                    luminanceSmoothing={0.8}
+                    intensity={1.4}
                 />
                 <Bloom
                     kernelSize={KernelSize.HUGE}
