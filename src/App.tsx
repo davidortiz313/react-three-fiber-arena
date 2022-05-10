@@ -2,9 +2,9 @@ import React from "react";
 import { Canvas } from "@react-three/fiber";
 import { CardModel } from "./components/card-model/card-model";
 import { Environment } from "./components/environment/environment";
-import { Color } from "three";
-import { KernelSize } from "postprocessing";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
+// import { KernelSize } from "postprocessing";
+// import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 const App: React.FC = () => {
     return (
@@ -17,7 +17,9 @@ const App: React.FC = () => {
             }}
             camera={{ fov: 45, position: [0, 0, 2.5] }}
             onCreated={({ gl, scene }) => {
-                scene.background = new Color(0xf6f6f6);
+                scene.background = new Color(0xffffff);
+                gl.outputEncoding = sRGBEncoding;
+                gl.toneMapping = ACESFilmicToneMapping;
                 gl.toneMappingExposure = 1.5;
             }}
         >

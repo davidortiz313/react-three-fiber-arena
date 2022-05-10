@@ -8,7 +8,6 @@ export const Environment: React.FC = () => {
             <EnvironmentLoader
                 background={false}
                 path={"./assets/HDRI/"}
-                // files={"royal.hdr"}
                 files={"small.hdr"}
             />
             <ambientLight intensity={2} />

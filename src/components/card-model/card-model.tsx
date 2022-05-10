@@ -3,11 +3,7 @@ import { useFrame, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {
     AnimationMixer,
-    BackSide,
-    Color,
-    FrontSide,
     Mesh,
-    MeshBasicMaterial,
     MeshStandardMaterial,
     sRGBEncoding,
     TextureLoader,
@@ -15,7 +11,7 @@ import {
 
 export const CardModel: React.FC = () => {
     const modelRef = useRef();
-    const animGltf = useLoader(GLTFLoader, "./assets/glTF/anim4.gltf");
+    const animGltf = useLoader(GLTFLoader, "./assets/glTF/anim5.gltf");
 
     const [cardFrontMap, cardBackMap, labelFrontMap, labelBackMap] = useLoader(
         TextureLoader,
@@ -75,7 +71,9 @@ export const CardModel: React.FC = () => {
                         });
                         break;
                     default:
-                        (child.material as MeshStandardMaterial).opacity = 0.1;
+                        const mat = child.material as MeshStandardMaterial;
+                        mat.roughness = 0.01;
+                        mat.opacity = 0.2;
                         break;
                 }
             }
