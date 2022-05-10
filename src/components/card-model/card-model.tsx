@@ -1,13 +1,7 @@
-import React, { Suspense, useEffect, useMemo, useRef } from "react";
+import React, { Suspense, useMemo, useRef } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import {
-    AnimationMixer,
-    Mesh,
-    MeshStandardMaterial,
-    sRGBEncoding,
-    TextureLoader,
-} from "three";
+import { Mesh, MeshStandardMaterial, sRGBEncoding, TextureLoader } from "three";
 
 export const CardModel: React.FC = () => {
     const modelRef = useRef();
@@ -73,7 +67,9 @@ export const CardModel: React.FC = () => {
                         <meshStandardMaterial
                             map={frontTopMap}
                             transparent={true}
-                            opacity={0.6}
+                            opacity={0.8}
+                            roughness={0.1}
+                            metalness={0.9}
                         />
                     </mesh>
 
@@ -86,7 +82,9 @@ export const CardModel: React.FC = () => {
                         <meshStandardMaterial
                             map={backTopMap}
                             transparent={true}
-                            opacity={0.6}
+                            opacity={0.8}
+                            roughness={0.1}
+                            metalness={0.9}
                         />
                     </mesh>
                 </primitive>
