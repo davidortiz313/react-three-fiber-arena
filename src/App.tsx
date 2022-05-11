@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { CardModel } from "./components/card-model/card-model";
+import { Scene } from "./components/scene/scene";
 import { Environment } from "./components/environment/environment";
 import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
 // import { KernelSize } from "postprocessing";
@@ -26,8 +26,8 @@ const App: React.FC = () => {
                     gl.toneMappingExposure = 1.5;
                 }}
             >
-                <Environment />
-                <CardModel toggle={toggle} />
+                <Environment toggle={toggle} />
+                <Scene toggle={toggle} />
 
                 {/* <EffectComposer multisampling={8}>
                 <Bloom
