@@ -9,7 +9,7 @@ import {
     TextureLoader,
 } from "three";
 
-export const CardModel: React.FC = () => {
+export const CardModel: React.FC<{ toggle: boolean }> = ({ toggle }) => {
     const modelRef = useRef();
     const animGltf = useLoader(GLTFLoader, "./assets/glTF/anim5.gltf");
 
@@ -32,6 +32,10 @@ export const CardModel: React.FC = () => {
     labelBackMap.flipY = false;
 
     const mixerRef = useRef<AnimationMixer | null>(null);
+
+    useEffect(() => {
+        console.log(toggle);
+    }, [toggle]);
 
     useFrame((_, delta) => {
         if (!mixerRef.current || !modelRef.current || !animGltf) return;
@@ -86,43 +90,11 @@ export const CardModel: React.FC = () => {
         <Suspense fallback={null}>
             <group>
                 <primitive object={animGltf.scene} />
-                <primitive ref={modelRef} object={model} scale={0.1}>
-                    {/* <mesh name="Front Image" position={[0, -1.2, 0.01]}>
-                        <planeGeometry args={[6.2, 8.9]} />
-                        <meshStandardMaterial map={frontMap} roughness={0.1} />
-                    </mesh>
-
-                    <mesh
-                        name="Back Image"
-                        position={[0, -1.2, -0.01]}
-                        rotation-y={-Math.PI}
-                    >
-                        <planeGeometry args={[6.2, 8.9]} />
-                        <meshStandardMaterial map={backMap} />
-                    </mesh>
-
-                    <mesh name="Front Top" position={[0, 4.85, 0.1]}>
-                        <planeGeometry args={[6.7, 1.9]} />
-                        <meshBasicMaterial
-                            map={frontTopMap}
-                            transparent={true}
-                            opacity={1}
-                        />
-                    </mesh>
-
-                    <mesh
-                        name="Back Top"
-                        position={[0, 4.85, -0.1]}
-                        rotation-y={-Math.PI}
-                    >
-                        <planeGeometry args={[6.7, 1.9]} />
-                        <meshBasicMaterial
-                            map={backTopMap}
-                            transparent={true}
-                            opacity={1}
-                        />
-                    </mesh> */}
-                </primitive>
+                {/* <primitive
+                    ref={modelRef}
+                    object={model}
+                    scale={0.1}
+                ></primitive> */}
             </group>
         </Suspense>
     );
