@@ -78,7 +78,6 @@ export const AnimatedCard: React.FC<Props> = ({
                         break;
                     default:
                         const mat = child.material as MeshStandardMaterial;
-                        mat.color = new Color(0xffffff);
                         mat.roughness = 0.01;
                         mat.metalness = 0.99;
                         mat.opacity = 0.1;
