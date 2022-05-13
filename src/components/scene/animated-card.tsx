@@ -4,6 +4,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {
     AnimationAction,
     AnimationMixer,
+    Color,
     Group,
     LoopOnce,
     Mesh,
@@ -30,7 +31,7 @@ export const AnimatedCard: React.FC<Props> = ({
 
     const groupRef = useRef<Group | null>(null);
     const mixerRef = useRef<AnimationMixer | null>(null);
-    const gltf = useLoader(GLTFLoader, "./assets/models/new.gltf");
+    const gltf = useLoader(GLTFLoader, "./assets/models/new1.gltf");
 
     const [action, setAction] = useState<AnimationAction>();
     const durationRef = useRef<number>();
@@ -63,13 +64,13 @@ export const AnimatedCard: React.FC<Props> = ({
                             map: cardBackMap,
                         });
                         break;
-                    case "label-front":
+                    case "label_front":
                         child.material = new MeshStandardMaterial({
                             map: labelFrontMap,
                             transparent: true,
                         });
                         break;
-                    case "label-back":
+                    case "label_back":
                         child.material = new MeshStandardMaterial({
                             map: labelBackMap,
                             transparent: true,
@@ -77,8 +78,10 @@ export const AnimatedCard: React.FC<Props> = ({
                         break;
                     default:
                         const mat = child.material as MeshStandardMaterial;
+                        mat.color = new Color(0xffffff);
                         mat.roughness = 0.01;
-                        mat.opacity = 0.2;
+                        mat.metalness = 0.99;
+                        mat.opacity = 0.1;
                         break;
                 }
             }
