@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./components/scene/scene";
 import { Environment } from "./components/environment/environment";
 import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
-// import { KernelSize } from "postprocessing";
-// import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import "./App.css";
+import useStore from "./store/store";
 
 const App: React.FC = () => {
+    const { playing, setIdle, controls } = useStore();
+    const timerRef = useRef<number | null>(null);
     const [toggle, setToggle] = useState(false);
     return (
         <>
@@ -25,24 +26,18 @@ const App: React.FC = () => {
                     gl.toneMapping = ACESFilmicToneMapping;
                     gl.toneMappingExposure = 1.5;
                 }}
+                onPointerDown={() => {
+                    !playing && setIdle(true);
+                }}
+                onPointerMove={() => {
+                    if (timerRef.current) clearInterval(timerRef.current);
+                    timerRef.current = window.setTimeout(() => {
+                        setIdle(false);
+                    }, 1000); // idle time 3s
+                }}
             >
-                <Environment toggle={toggle} />
+                <Environment />
                 <Scene toggle={toggle} />
-
-                {/* <EffectComposer multisampling={8}>
-                <Bloom
-                    kernelSize={3}
-                    luminanceThreshold={0}
-                    luminanceSmoothing={0.4}
-                    intensity={0.6}
-                />
-                <Bloom
-                    kernelSize={KernelSize.HUGE}
-                    luminanceThreshold={0}
-                    luminanceSmoothing={0}
-                    intensity={0.5}
-                />
-            </EffectComposer> */}
             </Canvas>
             <div
                 style={{
@@ -56,11 +51,13 @@ const App: React.FC = () => {
             >
                 <button
                     className="btn"
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.preventDefault();
                         setToggle((p) => !p);
+                        controls!.enableDamping = false;
                     }}
                 >
-                    {toggle ? "Stop" : "Play"}
+                    Toggle
                 </button>
             </div>
         </>

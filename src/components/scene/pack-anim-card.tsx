@@ -3,6 +3,7 @@ import { GroupProps, useFrame, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {
     AnimationMixer,
+    LoopOnce,
     Mesh,
     MeshStandardMaterial,
     sRGBEncoding,
@@ -11,11 +12,7 @@ import {
 
 export const PackAnimCard: React.FC<GroupProps> = ({ ...rest }) => {
     const modelRef = useRef();
-
-    const packAnimGltf = useLoader(
-        GLTFLoader,
-        "./assets/models/pack-anim.gltf"
-    );
+    const packAnimGltf = useLoader(GLTFLoader, "./assets/models/new.gltf");
 
     const [cardFrontMap, cardBackMap, labelFrontMap, labelBackMap] = useLoader(
         TextureLoader,
@@ -40,6 +37,9 @@ export const PackAnimCard: React.FC<GroupProps> = ({ ...rest }) => {
     useFrame((_, delta) => {
         if (!mixerRef.current || !modelRef.current || !packAnimGltf) return;
         mixerRef.current.update(delta);
+
+        // if (!isPlaying && isRotating)
+        //     (modelRef.current! as Group).rotation.y += delta;
     });
 
     const packAnimModel = useMemo(() => {
@@ -47,7 +47,12 @@ export const PackAnimCard: React.FC<GroupProps> = ({ ...rest }) => {
         mixerRef.current = new AnimationMixer(scene);
 
         const action = mixerRef.current!.clipAction(animations[0]);
+
+        action.setLoop(LoopOnce, 1);
+        action.clampWhenFinished = true;
         action.play();
+
+        console.log(mixerRef.current, animations[0]);
 
         packAnimGltf.scene.traverse((child) => {
             if (child instanceof Mesh) {

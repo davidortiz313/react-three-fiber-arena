@@ -2,8 +2,9 @@ import React, { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Group } from "three";
 import { Card } from "./card";
+import { useSpring } from "@react-spring/three";
 
-export const RotatingCard: React.FC = () => {
+export const RotatingCard: React.FC<{ toggle: boolean }> = ({ toggle }) => {
     const cardRef = useRef<Group>(null);
 
     useEffect(() => {
