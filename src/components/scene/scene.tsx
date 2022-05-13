@@ -33,7 +33,7 @@ export const Scene: React.FC<{ toggle: boolean }> = ({ toggle }) => {
     // rotate the model if not idle state
     useFrame((_, delta) => {
         if (playing || !rotating || idle) return;
-        groupRef.current!.rotation.y += delta;
+        groupRef.current!.rotation.y += 0.01;
     });
 
     // if animaion stops, start rotating

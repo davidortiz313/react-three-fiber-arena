@@ -1,10 +1,8 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import { GroupProps, useFrame, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {
-    AnimationAction,
     AnimationMixer,
-    Color,
     Group,
     LoopOnce,
     Mesh,
@@ -31,9 +29,8 @@ export const AnimatedCard: React.FC<Props> = ({
 
     const groupRef = useRef<Group | null>(null);
     const mixerRef = useRef<AnimationMixer | null>(null);
-    const gltf = useLoader(GLTFLoader, "./assets/models/new1.gltf");
+    const gltf = useLoader(GLTFLoader, "./assets/models/new2.gltf");
 
-    const [action, setAction] = useState<AnimationAction>();
     const durationRef = useRef<number>();
 
     const [cardFrontMap, cardBackMap, labelFrontMap, labelBackMap] = useLoader(
@@ -89,23 +86,19 @@ export const AnimatedCard: React.FC<Props> = ({
 
     // play animation
     useEffect(() => {
-        if (!action) {
-            const { animations, scene } = gltf;
-            mixerRef.current = new AnimationMixer(scene);
-            const _action = mixerRef.current!.clipAction(animations[0]);
-            durationRef.current = animations[0].duration;
-            _action.setLoop(LoopOnce, 1);
-            _action.clampWhenFinished = true;
-            setAction(_action);
-        }
+        const { animations, scene } = gltf;
+        mixerRef.current = new AnimationMixer(scene);
+        const action = mixerRef.current!.clipAction(animations[0]);
+        durationRef.current = animations[0].duration;
+        action.setLoop(LoopOnce, 1);
+        action.clampWhenFinished = true;
 
-        if (action && playing) {
+        if (playing) {
             action.stop();
             mixerRef.current!.time = 0;
             action.play();
-            console.log("start play");
         }
-    }, [gltf, action, playing, setAction]);
+    }, [gltf, playing]);
 
     // update animation mixer
     useFrame((_, delta) => {
@@ -114,8 +107,7 @@ export const AnimatedCard: React.FC<Props> = ({
             setPlaying(false);
             controls!.enableRotate = true;
         }
-
-        playing && mixerRef.current.update(delta);
+        playing && mixerRef.current.update(0.017);
     });
 
     return (
