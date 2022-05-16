@@ -2,7 +2,12 @@ import React, { useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./components/scene/scene";
 import { Environment } from "./components/environment/environment";
-import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
+import {
+    ACESFilmicToneMapping,
+    Color,
+    sRGBEncoding,
+    TextureLoader,
+} from "three";
 import "./App.css";
 import useStore from "./store/store";
 
@@ -21,7 +26,10 @@ const App: React.FC = () => {
                 }}
                 camera={{ fov: 45, position: [0, 0, 2.5] }}
                 onCreated={({ gl, scene }) => {
-                    scene.background = new Color(0xffffff);
+                    // scene.background = new Color(0xffffff);
+                    scene.background = new TextureLoader().load(
+                        "./assets/background.png"
+                    );
                     gl.outputEncoding = sRGBEncoding;
                     gl.toneMapping = ACESFilmicToneMapping;
                     gl.toneMappingExposure = 1.5;
