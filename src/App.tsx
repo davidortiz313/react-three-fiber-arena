@@ -2,12 +2,7 @@ import React, { useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./components/scene/scene";
 import { Environment } from "./components/environment/environment";
-import {
-    ACESFilmicToneMapping,
-    Color,
-    sRGBEncoding,
-    TextureLoader,
-} from "three";
+import { ACESFilmicToneMapping, sRGBEncoding } from "three";
 import "./App.css";
 import useStore from "./store/store";
 
@@ -18,17 +13,22 @@ const App: React.FC = () => {
     return (
         <>
             <Canvas
+                style={{
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    zIndex: 1,
+                    width: "100%",
+                    height: "100%",
+                }}
                 gl={{
                     antialias: true,
                     depth: true,
-                    alpha: false,
+                    alpha: true,
                     stencil: false,
                 }}
                 camera={{ fov: 45, position: [0, 0, 2.5] }}
                 onCreated={({ gl, scene }) => {
-                    scene.background = new TextureLoader().load(
-                        "./assets/background.png"
-                    );
                     gl.outputEncoding = sRGBEncoding;
                     gl.toneMapping = ACESFilmicToneMapping;
                     gl.toneMappingExposure = 1.5;
@@ -46,10 +46,25 @@ const App: React.FC = () => {
                 <Environment />
                 <Scene toggle={toggle} />
             </Canvas>
+
             <div
                 style={{
                     position: "absolute",
-                    zIndex: 1,
+                    top: "0",
+                    left: "0",
+                    zIndex: -1,
+                    width: "100%",
+                    height: "100%",
+                    backgroundImage: "url('./assets/background.png')",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                }}
+            ></div>
+
+            <div
+                style={{
+                    position: "absolute",
+                    zIndex: 2,
                     bottom: "80px",
                     width: "100%",
                     display: "flex",
@@ -67,10 +82,11 @@ const App: React.FC = () => {
                     REVEAL NEXT CARD
                 </button>
             </div>
+
             <div
                 style={{
                     position: "absolute",
-                    zIndex: 1,
+                    zIndex: 2,
                     bottom: "40px",
                     width: "100%",
                     display: "flex",
