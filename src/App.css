@@ -1,9 +1,13 @@
 .btn {
     background-color: #00ff2a;
-    width: 100px;
+    width: 250px;
     height: 40px;
     border-radius: 10px;
+    border: 0;
     color: black;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .btn:hover {
@@ -12,4 +16,19 @@
 
 .btn:active {
     background-color: #00ff40;
+}
+
+.transparentBbtn {
+    border: none;
+    font-size: 1.2rem;
+    background: transparent;
+    color: #00ff40;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.transparentBbtn:hover {
+    color: #cbffbe;
+}
+.transparentBbtn:active {
+    color: #00ff40;
 }

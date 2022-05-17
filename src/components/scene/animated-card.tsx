@@ -45,7 +45,6 @@ export const AnimatedCard: React.FC<Props> = ({
     cardBackMap.flipY = false;
     labelFrontMap.flipY = false;
     labelBackMap.flipY = false;
-
     // add textures
     useEffect(() => {
         gltf.scene.traverse((child) => {
@@ -71,6 +70,20 @@ export const AnimatedCard: React.FC<Props> = ({
                         child.material = new MeshStandardMaterial({
                             map: labelBackMap,
                             transparent: true,
+                        });
+                        break;
+                    case "card_edge":
+                        child.material = new MeshStandardMaterial({
+                            color: 0xffffff,
+                            transparent: true,
+                            opacity: 0.5,
+                        });
+                        break;
+                    case "label_edge":
+                        child.material = new MeshStandardMaterial({
+                            color: 0xffffff,
+                            transparent: true,
+                            opacity: 0.5,
                         });
                         break;
                     default:

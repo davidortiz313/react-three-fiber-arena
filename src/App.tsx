@@ -26,7 +26,6 @@ const App: React.FC = () => {
                 }}
                 camera={{ fov: 45, position: [0, 0, 2.5] }}
                 onCreated={({ gl, scene }) => {
-                    // scene.background = new Color(0xffffff);
                     scene.background = new TextureLoader().load(
                         "./assets/background.png"
                     );
@@ -51,7 +50,7 @@ const App: React.FC = () => {
                 style={{
                     position: "absolute",
                     zIndex: 1,
-                    bottom: "10px",
+                    bottom: "80px",
                     width: "100%",
                     display: "flex",
                     justifyContent: "center",
@@ -65,7 +64,21 @@ const App: React.FC = () => {
                         controls!.enableDamping = false;
                     }}
                 >
-                    Toggle
+                    REVEAL NEXT CARD
+                </button>
+            </div>
+            <div
+                style={{
+                    position: "absolute",
+                    zIndex: 1,
+                    bottom: "40px",
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                }}
+            >
+                <button className="transparentBbtn" onClick={(e) => {}}>
+                    SIKP ANIMATION
                 </button>
             </div>
         </>
