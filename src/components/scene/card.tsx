@@ -59,7 +59,7 @@ export const Card = React.forwardRef<Group>((props: GroupProps, ref) => {
                     default:
                         const mat = child.material as MeshStandardMaterial;
                         mat.roughness = 0.01;
-                        mat.opacity = 0.2;
+                        mat.opacity = 0.1;
                         break;
                 }
             }
