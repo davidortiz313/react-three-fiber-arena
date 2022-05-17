@@ -55,14 +55,14 @@ export const Scene: React.FC<{ toggle: boolean }> = ({ toggle }) => {
             <AnimatedCard
                 cardFront={"./assets/front.jpg"}
                 cardBack={"./assets/back.jpg"}
-                labelFront={"./assets/frontTop.png"}
-                labelBack={"./assets/backTop.png"}
-                // labelFront={
-                //     "https://storage.googleapis.com/arenaxlab/labels/LeBronJames_Front-1.png"
-                // }
-                // labelBack={
-                //     "https://storage.googleapis.com/arenaxlab/labels/LeBronJames_Back-1.png"
-                // }
+                // labelFront={"./assets/frontTop.png"}
+                // labelBack={"./assets/backTop.png"}
+                labelFront={
+                    "https://storage.googleapis.com/arenaxlab/labels/9.5%20Gem%20Mint%20Front%20No%20Auto.png"
+                }
+                labelBack={
+                    "https://storage.googleapis.com/arenaxlab/labels/Mint%2010%20Back.png"
+                }
             />
         </group>
     );
