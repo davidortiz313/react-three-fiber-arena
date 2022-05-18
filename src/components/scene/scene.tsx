@@ -16,7 +16,6 @@ export const Scene: React.FC<{ toggle: boolean }> = ({ toggle }) => {
     } = useStore();
 
     const groupRef = useRef<Group | null>(null);
-
     // reset entire animation with togggle button
     useEffect(() => {
         setPlaying(true);

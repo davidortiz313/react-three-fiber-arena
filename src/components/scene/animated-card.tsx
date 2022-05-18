@@ -90,7 +90,7 @@ export const AnimatedCard: React.FC<Props> = ({
                         const mat = child.material as MeshStandardMaterial;
                         mat.roughness = 0.01;
                         mat.metalness = 0.99;
-                        mat.opacity = 0.5;
+                        mat.opacity = 0.3;
                         break;
                 }
             }
