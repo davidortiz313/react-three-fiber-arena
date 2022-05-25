@@ -1,13 +1,16 @@
 import React, { Suspense, useEffect, useRef } from "react";
-import { GroupProps, useLoader } from "@react-three/fiber";
+import { GroupProps, useFrame, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {
+    AnimationMixer,
     Group,
+    LoopOnce,
     Mesh,
     MeshStandardMaterial,
     sRGBEncoding,
     TextureLoader,
 } from "three";
+import useStore from "../../store/store";
 
 interface Props extends GroupProps {
     cardFront: string;
@@ -22,8 +25,13 @@ export const AnimatedCard: React.FC<Props> = ({
     labelBack,
     ...rest
 }) => {
+    const { playing, setPlaying, controls } = useStore();
+
     const groupRef = useRef<Group | null>(null);
+    const mixerRef = useRef<AnimationMixer | null>(null);
     const gltf = useLoader(GLTFLoader, "./assets/models/new2.gltf");
+
+    const durationRef = useRef<number>();
 
     const [cardFrontMap, cardBackMap, labelFrontMap, labelBackMap] = useLoader(
         TextureLoader,
@@ -88,6 +96,32 @@ export const AnimatedCard: React.FC<Props> = ({
             }
         });
     }, [gltf, cardFrontMap, cardBackMap, labelFrontMap, labelBackMap]);
+
+    // play animation
+    useEffect(() => {
+        const { animations, scene } = gltf;
+        // mixerRef.current = new AnimationMixer(scene);
+        // const action = mixerRef.current!.clipAction(animations[0]);
+        // durationRef.current = animations[0].duration;
+        // action.setLoop(LoopOnce, 1);
+        // action.clampWhenFinished = true;
+
+        // if (playing) {
+        //     action.stop();
+        //     mixerRef.current!.time = 0;
+        //     action.play();
+        // }
+    }, [gltf, playing]);
+
+    // update animation mixer
+    useFrame((_, delta) => {
+        // if (!mixerRef.current || !durationRef.current) return;
+        // if (mixerRef.current.time > durationRef.current && playing) {
+        //     setPlaying(false);
+        //     controls!.enableRotate = true;
+        // }
+        // playing && mixerRef.current.update(0.017);
+    });
 
     return (
         <group ref={groupRef} {...rest}>

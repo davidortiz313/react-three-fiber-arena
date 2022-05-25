@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./scene";
 import { Environment } from "../environment/environment";
-import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
+import { ACESFilmicToneMapping, sRGBEncoding } from "three";
+import useStore from "../../store/store";
+import "../../App.css";
 
 const Rotating: React.FC = () => {
+    const { playing, setPlaying, setIdle, controls } = useStore();
+    const timerRef = useRef<number | null>(null);
+    const [toggle, setToggle] = useState(true);
+
+    useEffect(() => {
+        if (!controls) return;
+        controls.enableRotate = true;
+        setPlaying(false);
+    }, [controls, setPlaying]);
+
     return (
         <>
             <Canvas
@@ -27,11 +39,19 @@ const Rotating: React.FC = () => {
                     gl.outputEncoding = sRGBEncoding;
                     gl.toneMapping = ACESFilmicToneMapping;
                     gl.toneMappingExposure = 1.5;
-                    scene.background = new Color(0xeeeeee);
+                }}
+                onPointerDown={() => {
+                    !playing && setIdle(true);
+                }}
+                onPointerMove={() => {
+                    if (timerRef.current) clearInterval(timerRef.current);
+                    timerRef.current = window.setTimeout(() => {
+                        setIdle(false);
+                    }, 1000); // idle time 3s
                 }}
             >
                 <Environment />
-                <Scene />
+                <Scene toggle={toggle} />
             </Canvas>
         </>
     );

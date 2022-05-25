@@ -4,8 +4,8 @@ import Rotating from "./components/rotating/Rotating";
 const App: React.FC = () => {
     return (
         <>
-            <PackAnim />
-            {/* <Rotating /> */}
+            {/* <PackAnim /> */}
+            <Rotating />
         </>
     );
 };
