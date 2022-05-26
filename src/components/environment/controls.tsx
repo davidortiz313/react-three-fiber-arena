@@ -11,7 +11,6 @@ export const Controls: React.FC = () => {
     useEffect(() => {
         const _controls = new OrbitControls(camera, gl.domElement);
         _controls.target0.set(0, -0.1, 0);
-        console.log(_controls);
         _controls.dampingFactor = 0.05;
         _controls.enableDamping = true;
         _controls.enablePan = false;

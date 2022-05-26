@@ -2,7 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
 import { Group } from "three";
 import useStore from "../../store/store";
-import { AnimatedCard } from "./animated-card";
+import { Card } from "./card";
 
 export const Scene: React.FC<{ toggle: boolean }> = ({ toggle }) => {
     const {
@@ -51,7 +51,7 @@ export const Scene: React.FC<{ toggle: boolean }> = ({ toggle }) => {
 
     return (
         <group ref={groupRef}>
-            <AnimatedCard
+            <Card
                 cardFront={
                     "https://storage.googleapis.com/arenaxlab/trimmed_scans/cc5c0bff-35e4-43d7-98bf-559189da9249_front_scan_1646698221.993237.jpg"
                 }

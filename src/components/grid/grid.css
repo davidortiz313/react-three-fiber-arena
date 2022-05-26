@@ -1,0 +1,8 @@
+.control-panel {
+    position: absolute;
+    z-index: 5;
+    top: calc(100vh - 150px);
+    transform: translate(calc(100vw / 2 - 50%), 0);
+    width: 400px;
+    height: 100px;
+}
