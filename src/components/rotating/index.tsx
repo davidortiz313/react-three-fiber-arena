@@ -38,7 +38,7 @@ const Rotating: React.FC = () => {
                     gl.outputEncoding = sRGBEncoding;
                     gl.toneMapping = ACESFilmicToneMapping;
                     gl.toneMappingExposure = 1.5;
-                    scene.background = new Color(0xeeeeee);
+                    scene.background = new Color(0xffffff);
                 }}
                 onPointerDown={() => {
                     !playing && setIdle(true);
