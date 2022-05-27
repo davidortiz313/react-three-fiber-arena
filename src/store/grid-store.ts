@@ -2,10 +2,10 @@ import create from "zustand";
 
 interface SceneState {
     side: string;
-    pos: string;
+    kind: string;
     grade: string;
     setSide: (s: string) => void;
-    setPos: (s: string) => void;
+    setKind: (s: string) => void;
     setGrade: (s: string) => void;
     size: [number, number];
     setSize: (s: [number, number]) => void;
@@ -13,14 +13,14 @@ interface SceneState {
 
 const useGridStore = create<SceneState>((set, get) => ({
     side: "front",
-    pos: "Center",
-    grade: "Spotting",
+    kind: "wear",
+    grade: "edges",
     size: [window.innerWidth, window.innerHeight],
     setSide: (side: string) => {
         set((state) => ({ ...state, side }));
     },
-    setPos: (pos: string) => {
-        set((state) => ({ ...state, pos }));
+    setKind: (kind: string) => {
+        set((state) => ({ ...state, kind }));
     },
     setGrade: (grade: string) => {
         set((state) => ({ ...state, grade }));

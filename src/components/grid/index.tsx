@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./scene";
 import { Environment } from "../environment/environment";
 import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
 import "./grid.css";
 import useGridStore from "../../store/grid-store";
+import { Controls } from "./controls";
+import { CameraDefaultPos } from "./camera-default-pos";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const Grid: React.FC = () => {
-    const { setSide, setPos, setGrade } = useGridStore();
+    const { setSide, side, kind, setKind, grade, setGrade } = useGridStore();
+    const [toggle, setToggle] = useState(false);
+    const orbitRef = useRef<OrbitControls | null>(null);
 
     return (
         <>
@@ -26,9 +31,9 @@ const Grid: React.FC = () => {
                     alpha: true,
                     stencil: false,
                 }}
-                // orthographic
-                camera={{ fov: 45, position: [0, 0, 2.2] }}
-                // camera={{ zoom: 500, position: [0, 0, 100] }}
+                orthographic
+                // camera={{ fov: 45, position: [0, 0, 2.2] }}
+                camera={{ zoom: 500, position: [0, 0, 10] }}
                 onCreated={({ gl, scene, camera }) => {
                     gl.outputEncoding = sRGBEncoding;
                     gl.toneMapping = ACESFilmicToneMapping;
@@ -38,58 +43,90 @@ const Grid: React.FC = () => {
             >
                 <Environment />
                 <Scene />
+                <CameraDefaultPos toggle={toggle} orbitRef={orbitRef} />
+                <Controls orbitRef={orbitRef} />
             </Canvas>
 
-            <div className="control-panel">
-                <div className="row m-0 p-0 flex d-flex justify-content-between">
-                    <div className="col-5 flex d-flex justify-content-center">
-                        <button
-                            className="btn btn-primary"
-                            style={{ width: "100px" }}
-                            onClick={() => {
-                                setSide("front");
+            <div className="control-panel container border p-4">
+                <div className="row m-0 p-0 d-flex justify-content-between text-white">
+                    <div className="form-check w-50">
+                        <input
+                            type="radio"
+                            className="form-check-input"
+                            name="side"
+                            id="frontSide"
+                            checked={side === "front"}
+                            onChange={(e) => {
+                                e.target.checked && setSide("front");
                             }}
-                        >
-                            Front
-                        </button>
+                        />
+                        <label htmlFor="frontSide">Front</label>
                     </div>
-                    <div className="col-5 flex d-flex justify-content-center">
-                        <button
-                            className="btn btn-primary"
-                            style={{ width: "100px" }}
-                            onClick={() => {
-                                setSide("back");
-                            }}
-                        >
-                            Next
-                        </button>
+                    <div className="form-check w-50 d-flex justify-content-end">
+                        <div>
+                            <input
+                                type="radio"
+                                className="form-check-input"
+                                id="backSide"
+                                name="side"
+                                checked={side === "back"}
+                                onChange={(e) => {
+                                    e.target.checked && setSide("back");
+                                }}
+                            />
+                            <label htmlFor="backSide">Back</label>
+                        </div>
                     </div>
                 </div>
-                <div className="row d-flex justify-content-between mt-1 p-0 text-white">
-                    <div className="col-5 d-flex flex-column justify-content-center">
-                        <div className="row m-0 p-0">Position</div>
+                <div className="mt-4 row d-flex flex-column justify-content-between mt-1 p-0 text-white">
+                    <div className="d-flex flex-column justify-content-center">
+                        <div className="row m-0 p-0">SUBGRADE</div>
                         <div className="row m-0 p-0">
-                            <select className="form-control">
-                                <option value="center">Center 10</option>
-                                <option value="edge">Edge 9.5</option>
-                                <option value="corner">Corner 10</option>
-                                <option value="surface">Surface 10</option>
-                                <option value="auto">Auto 10</option>
+                            <select
+                                className="form-select"
+                                onChange={(e) => {
+                                    setGrade(e.target.value);
+                                }}
+                                value={grade}
+                            >
+                                <option value="centering">Centering</option>
+                                <option value="edges">Edges</option>
+                                <option value="corners">Corners</option>
+                                <option value="surface">Surface</option>
+                                <option value="auto">Auto</option>
                             </select>
                         </div>
                     </div>
-                    <div className="col-5 d-flex flex-column justify-content-center">
-                        <div className="row m-0 p-0">Surface Subgrade</div>
+                    <div className="mt-4 d-flex flex-column justify-content-center">
+                        <div className="row m-0 p-0">KIND</div>
                         <div className="row m-0 p-0">
-                            <select className="form-control">
+                            <select
+                                className="form-select"
+                                onChange={(e) => {
+                                    setKind(e.target.value);
+                                }}
+                                value={kind}
+                            >
+                                <option value="wear">Wear</option>
+                                <option value="misshaped">Misshaped</option>
                                 <option value="spotting">Spotting</option>
-                                <option value="print-line">Print Line</option>
+                                <option value="whitening">Whitening</option>
                                 <option value="scratch">Scratch</option>
-                                <option value="bent">Bent</option>
-                                <option value="dent">Dent</option>
                                 <option value="crease">Crease</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div className="mt-4 d-flex">
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => {
+                                setToggle((p) => !p);
+                            }}
+                        >
+                            Reset Camera
+                        </button>
                     </div>
                 </div>
             </div>

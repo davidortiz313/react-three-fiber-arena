@@ -7,13 +7,23 @@ import useGridStore from "../../store/grid-store";
 import { data } from "./data";
 
 export const Scene: React.FC = () => {
-    const { side, pos, grade } = useGridStore();
+    const { side, kind, grade } = useGridStore();
 
-    const edges = data.map((_) => _.edges);
-    const front_edges = edges.map((_) => _.front);
-    const back_edges = edges.map((_) => _.back);
+    const filteredEdge = data
+        .map((_: any) => _.edges)
+        .map((ele: any) => ele[`${side}`])
+        .map((ele) => ({
+            top: ele.top.labels.filter((e: any) => e.kind === kind),
+            right: ele.right.labels.filter((e: any) => e.kind === kind),
+            bottom: ele.bottom.labels.filter((e: any) => e.kind === kind),
+            left: ele.left.labels.filter((e: any) => e.kind === kind),
+        }));
+    // .filter(
+    //     ({ top, right, bottom, left }: any) =>
+    //         top.length && right.length && left.length && bottom.length
+    // );
 
-    console.log(front_edges.map((_) => _.top).map((_) => _.labels));
+    console.log(filteredEdge);
     const [frontMap, backMap] = useLoader(THREE.TextureLoader, [
         "./assets/front.jpg",
         "./assets/back.jpg",
@@ -37,96 +47,31 @@ export const Scene: React.FC = () => {
                 <meshBasicMaterial map={map} />
             </mesh>
 
-            {
-                front_edges
-                    .map((_) => _.top)
-                    .map((_) => _.labels)
-                    .map((ele: any[], idx3) => (
-                        <Line
-                            key={idx3}
-                            pt1={[
-                                ele[0].x1 - 0.5,
-                                ele[0].y1 + 0.5 * ratio,
-                                0.01,
-                            ]}
-                            pt2={[
-                                ele[0].x2 - 0.5,
-                                ele[0].y2 + 0.5 * ratio,
-                                0.01,
-                            ]}
-                        />
-                    ))
-                // front_edges.map
-                // <Line
-                //     pt1={[top.labels[0].x1, top.labels[0].y1, 0]}
-                //     pt2={[top.labels[0].x2, top.labels[0].y2, 0]}
-                // />
-            }
-            {front_edges
-                .map((_) => _.left)
-                .map((_) => _.labels)
-                .map(
-                    (ele: any[], idx3) =>
-                        ele.length > 0 && (
-                            <Line
-                                key={idx3 * 100}
-                                pt1={[
-                                    ele[0].x1 - 0.5,
-                                    -ele[0].y1 + 0.5 * ratio,
-                                    0.01,
-                                ]}
-                                pt2={[
-                                    ele[0].x2 - 0.5,
-                                    -ele[0].y2 + 0.5 * ratio,
-                                    0.01,
-                                ]}
-                            />
-                        )
-                )}
-
-            {front_edges
-                .map((_) => _.bottom)
-                .map((_) => _.labels)
-                .map(
-                    (ele: any[], idx3) =>
-                        ele.length > 0 && (
-                            <Line
-                                key={idx3 * 100}
-                                pt1={[
-                                    ele[0].x1 - 0.5,
-                                    -ele[0].y1 + 0.5 * ratio,
-                                    0.01,
-                                ]}
-                                pt2={[
-                                    ele[0].x2 - 0.5,
-                                    -ele[0].y2 + 0.5 * ratio,
-                                    0.01,
-                                ]}
-                            />
-                        )
-                )}
-
-            {front_edges
-                .map((_) => _.right)
-                .map((_) => _.labels)
-                .map(
-                    (ele: any[], idx3) =>
-                        ele.length > 0 && (
-                            <Line
-                                key={idx3 * 100}
-                                pt1={[
-                                    ele[0].x1 - 0.5,
-                                    -ele[0].y1 + 0.5 * ratio,
-                                    0.01,
-                                ]}
-                                pt2={[
-                                    ele[0].x2 - 0.5,
-                                    -ele[0].y2 + 0.5 * ratio,
-                                    0.01,
-                                ]}
-                            />
-                        )
-                )}
+            {filteredEdge.map((ele: any, idx: number) => {
+                return (
+                    <group key={idx}>
+                        {Object.keys(ele).map((key: string, idx: number) => {
+                            return ele[`${key}`].map(
+                                ({ x1, x2, y1, y2 }: any, index: number) => (
+                                    <Line
+                                        key={index}
+                                        pt1={[
+                                            x1 - 0.5,
+                                            ratio * (0.5 - y1),
+                                            0.01,
+                                        ]}
+                                        pt2={[
+                                            x2 - 0.5,
+                                            ratio * (0.5 - y2),
+                                            0.01,
+                                        ]}
+                                    />
+                                )
+                            );
+                        })}
+                    </group>
+                );
+            })}
         </group>
     );
 };
