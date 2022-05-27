@@ -7,8 +7,8 @@ import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
 import useGridStore from "../../store/grid-store";
 
 interface Props {
-    pt1?: [number, number, number];
-    pt2?: [number, number, number];
+    pt1?: number[];
+    pt2?: number[];
     color?: ColorRepresentation;
 }
 

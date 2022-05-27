@@ -2,7 +2,6 @@ import React, { Suspense, useEffect, useRef } from "react";
 import { GroupProps, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import {
-    AnimationMixer,
     Group,
     Mesh,
     MeshStandardMaterial,

@@ -22,7 +22,7 @@ export const Controls: React.FC<{
         return () => {
             _controls.dispose();
         };
-    }, [camera, gl, setControls]);
+    }, [camera, gl, orbitRef, setControls]);
 
     useFrame(() => {
         if (!controls) return;

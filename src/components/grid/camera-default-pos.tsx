@@ -32,6 +32,6 @@ export const CameraDefaultPos: React.FC<{
                 camera.updateProjectionMatrix();
             },
         });
-    }, [toggle]);
+    }, [toggle, orbitRef, camera]);
     return null;
 };

@@ -10,13 +10,16 @@ import { CameraDefaultPos } from "./camera-default-pos";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const Grid: React.FC = () => {
-    const { setSide, side, kind, setKind, grade, setGrade } = useGridStore();
+    const { setSide, side, kind, setKind, grade, setGrade, setSize } =
+        useGridStore();
     const [toggle, setToggle] = useState(false);
     const orbitRef = useRef<OrbitControls | null>(null);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
     return (
         <>
             <Canvas
+                ref={canvasRef}
                 style={{
                     position: "absolute",
                     top: "0",
@@ -32,9 +35,11 @@ const Grid: React.FC = () => {
                     stencil: false,
                 }}
                 orthographic
-                // camera={{ fov: 45, position: [0, 0, 2.2] }}
                 camera={{ zoom: 500, position: [0, 0, 10] }}
-                onCreated={({ gl, scene, camera }) => {
+                onCreated={({ gl, scene }) => {
+                    const _canvas = canvasRef.current! as HTMLCanvasElement;
+                    setSize([_canvas.clientWidth, _canvas.clientHeight]);
+
                     gl.outputEncoding = sRGBEncoding;
                     gl.toneMapping = ACESFilmicToneMapping;
                     gl.toneMappingExposure = 1.5;
