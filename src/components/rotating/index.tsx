@@ -4,6 +4,7 @@ import { Scene } from "./scene";
 import { Environment } from "../environment/environment";
 import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
 import useStore from "../../store/store";
+import { EffectComposer, Vignette } from "@react-three/postprocessing";
 
 const Rotating: React.FC = () => {
     const { playing, setPlaying, setIdle, controls } = useStore();
@@ -50,6 +51,9 @@ const Rotating: React.FC = () => {
                     }, 1000); // idle time 3s
                 }}
             >
+                <EffectComposer>
+                    <Vignette eskil={false} offset={0.1} darkness={0.8} />
+                </EffectComposer>
                 <Environment />
                 <Scene toggle={toggle} />
             </Canvas>

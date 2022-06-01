@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Line } from "./line";
 import useGridStore from "../../store/grid-store";
 import { data } from "./data";
+import { state } from "./state";
 
 export const Scene: React.FC = () => {
     const { side, kind, grade } = useGridStore();
@@ -19,7 +20,7 @@ export const Scene: React.FC = () => {
 
     const getPos = useCallback(
         (x: number, y: number) => {
-            return [x - 0.5, (0.5 - y) * ratio, 0.01];
+            return [x - 0.5, (0.5 - y) * ratio, state.annotationHeight];
         },
         [ratio]
     );

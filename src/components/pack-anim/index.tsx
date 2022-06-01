@@ -58,8 +58,21 @@ const PackAnim: React.FC = () => {
                     backgroundImage: "url('./assets/background.png')",
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
+                    overflow: "hidden",
                 }}
-            ></div>
+            >
+                <video
+                    style={{
+                        objectFit: "fill",
+                        width: "100%",
+                        height: "100%",
+                    }}
+                    src="./assets/video_bg.mp4"
+                    autoPlay
+                    muted
+                    loop
+                />
+            </div>
 
             <div
                 style={{

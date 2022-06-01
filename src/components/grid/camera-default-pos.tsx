@@ -15,6 +15,7 @@ export const CameraDefaultPos: React.FC<{
             duration: 0.5,
             x: 0,
             y: 0,
+            z: 2.2,
             onUpdate: () => {
                 orbitRef.current!.target.set(
                     camera.position.x,
@@ -23,15 +24,15 @@ export const CameraDefaultPos: React.FC<{
                 );
             },
         });
-        const zoom = { value: camera.zoom };
-        gsap.to(zoom, {
-            duration: 0.5,
-            value: 500,
-            onUpdate: () => {
-                camera.zoom = zoom.value;
-                camera.updateProjectionMatrix();
-            },
-        });
+        // const zoom = { value: camera.zoom };
+        // gsap.to(zoom, {
+        //     duration: 0.5,
+        //     value: 500,
+        //     onUpdate: () => {
+        //         camera.zoom = zoom.value;
+        //         camera.updateProjectionMatrix();
+        //     },
+        // });
     }, [toggle, orbitRef, camera]);
     return null;
 };

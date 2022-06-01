@@ -15,14 +15,14 @@ interface Props {
 export const Line: React.FC<Props> = ({
     pt1 = [0, 0, 0],
     pt2 = [0, 0, 1],
-    color = "green",
+    color = "#02a137",
 }) => {
     const { size } = useGridStore();
 
     const line = useMemo(() => {
         const geo = new LineGeometry();
         const matLine = new LineMaterial({
-            linewidth: 5, // in world units with size attenuation, pixels otherwise
+            linewidth: 4, // in world units with size attenuation, pixels otherwise
             dashed: false,
             alphaToCoverage: true,
         });
