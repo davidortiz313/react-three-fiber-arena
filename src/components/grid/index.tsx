@@ -15,7 +15,6 @@ const Grid: React.FC = () => {
     const { setSide, side, kind, setKind, grade, setGrade, setSize } =
         useGridStore();
     const [toggle, setToggle] = useState(false);
-    const orbitRef = useRef<OrbitControls | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
     return (
@@ -63,8 +62,8 @@ const Grid: React.FC = () => {
                 </EffectComposer> */}
                 <Environment />
                 <Scene />
-                {/* <CameraDefaultPos toggle={toggle} orbitRef={orbitRef} /> */}
-                <Controls orbitRef={orbitRef} />
+                <CameraDefaultPos toggle={toggle} />
+                <Controls />
             </Canvas>
 
             <div className="control-panel container border p-4">
