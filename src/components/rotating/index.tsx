@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./scene";
 import { Environment } from "./environment";
 import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
 import useStore from "../../store/rotate-store";
-import { EffectComposer, Vignette } from "@react-three/postprocessing";
 
 const Rotating: React.FC = () => {
     const { rotating, setRotating } = useStore();
@@ -47,9 +46,6 @@ const Rotating: React.FC = () => {
                 }}
                 onPointerMove={reset}
             >
-                <EffectComposer>
-                    <Vignette eskil={false} offset={0.1} darkness={0.8} />
-                </EffectComposer>
                 <Environment />
                 <Scene />
             </Canvas>

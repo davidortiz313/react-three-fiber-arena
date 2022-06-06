@@ -7,9 +7,6 @@ import "./grid.css";
 import useGridStore from "../../store/grid-store";
 import { Controls } from "./controls";
 import { CameraDefaultPos } from "./camera-default-pos";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { KernelSize } from "postprocessing";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 const Grid: React.FC = () => {
     const { setSide, side, kind, setKind, grade, setGrade, setSize } =
@@ -46,20 +43,6 @@ const Grid: React.FC = () => {
                     scene.background = new Color(0x000000);
                 }}
             >
-                {/* <EffectComposer multisampling={8}>
-                    <Bloom
-                        kernelSize={3}
-                        luminanceThreshold={0}
-                        luminanceSmoothing={0.4}
-                        intensity={0}
-                    />
-                    <Bloom
-                        kernelSize={KernelSize.HUGE}
-                        luminanceThreshold={0}
-                        luminanceSmoothing={0.5}
-                        intensity={0.1}
-                    />
-                </EffectComposer> */}
                 <Environment />
                 <Scene />
                 <CameraDefaultPos toggle={toggle} />
