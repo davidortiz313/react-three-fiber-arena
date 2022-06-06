@@ -15,7 +15,7 @@ const Rotating: React.FC = () => {
             setRotating(true);
             timerRef.current = null;
         }, 1000); // idle time 3s
-    }, [setRotating]);
+    }, [rotating, setRotating]);
 
     return (
         <>

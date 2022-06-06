@@ -2,6 +2,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useState } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from "three";
+import { state } from "../rotating/state";
 
 export const Controls: React.FC<{
     orbitRef: React.MutableRefObject<OrbitControls | null>;
@@ -19,7 +20,7 @@ export const Controls: React.FC<{
         _controls.mouseButtons.LEFT = THREE.MOUSE.PAN;
         _controls.touches.ONE = THREE.TOUCH.PAN;
         orbitRef.current = _controls;
-        setControls(_controls);
+        state.controls = _controls;
 
         return () => {
             _controls.dispose();
@@ -27,8 +28,8 @@ export const Controls: React.FC<{
     }, [camera, gl, orbitRef, setControls]);
 
     useFrame(() => {
-        if (!controls) return;
-        controls.update();
+        if (!state.controls) return;
+        state.controls.update();
     });
     return null;
 };
