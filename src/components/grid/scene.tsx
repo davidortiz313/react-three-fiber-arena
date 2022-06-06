@@ -10,12 +10,14 @@ import { state } from "./state";
 export const Scene: React.FC = () => {
     const { side, kind, grade } = useGridStore();
 
+    console.log("** Grid");
+
     const [frontMap, backMap] = useLoader(THREE.TextureLoader, [
         "./assets/front.jpg",
         "./assets/back.jpg",
     ]);
+    const ratio = frontMap.image.height / frontMap.image.width;
 
-    const [ratio, setRatio] = useState(1);
     const [map, setMap] = useState(frontMap);
 
     const getPos = useCallback(
@@ -48,11 +50,6 @@ export const Scene: React.FC = () => {
             .map((ele: any) => ele.centering)
             .map((ele: any) => ele[`${side}`]);
     }, [side]);
-
-    console.log(dataFilteredByCentering());
-    useEffect(() => {
-        setRatio(map.image.height / map.image.width);
-    }, [setRatio, map]);
 
     useEffect(() => {
         setMap(side === "front" ? frontMap : backMap);

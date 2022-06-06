@@ -5,6 +5,7 @@ import useStore from "../../store/store";
 import { Card } from "./card";
 
 export const Scene: React.FC<{ toggle: boolean }> = ({ toggle }) => {
+    console.log("Rotating Scene");
     const {
         playing,
         setPlaying,

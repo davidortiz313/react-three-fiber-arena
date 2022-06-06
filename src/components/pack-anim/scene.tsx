@@ -5,6 +5,7 @@ import useStore from "../../store/store";
 import { AnimatedCard } from "./animated-card";
 
 export const Scene: React.FC<{ toggle: boolean }> = ({ toggle }) => {
+    console.log("Pack Scene");
     const {
         playing,
         setPlaying,

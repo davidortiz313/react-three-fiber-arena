@@ -29,7 +29,7 @@ export const AnimatedCard: React.FC<Props> = ({
 
     const groupRef = useRef<Group | null>(null);
     const mixerRef = useRef<AnimationMixer | null>(null);
-    const gltf = useLoader(GLTFLoader, "./assets/models/new2.gltf");
+    const gltf = useLoader(GLTFLoader, "./assets/models/anim-card.gltf");
 
     const durationRef = useRef<number>();
 
