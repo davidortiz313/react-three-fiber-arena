@@ -1,21 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./scene";
 import { Environment } from "./environment";
 import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
-import useStore from "../../store/store";
+import useStore from "../../store/rotate-store";
 import { EffectComposer, Vignette } from "@react-three/postprocessing";
 
 const Rotating: React.FC = () => {
-    const { playing, setPlaying, setIdle, controls } = useStore();
+    const { rotating, setRotating } = useStore();
     const timerRef = useRef<number | null>(null);
-    const [toggle] = useState(true);
-
-    useEffect(() => {
-        if (!controls) return;
-        controls.enableRotate = true;
-        setPlaying(false);
-    }, [controls, setPlaying]);
+    const reset = useCallback(() => {
+        if (timerRef.current) clearInterval(timerRef.current);
+        timerRef.current = window.setTimeout(() => {
+            setRotating(true);
+            timerRef.current = null;
+        }, 1000); // idle time 3s
+    }, [setRotating]);
 
     return (
         <>
@@ -42,20 +42,16 @@ const Rotating: React.FC = () => {
                     scene.background = new Color(0xffffff);
                 }}
                 onPointerDown={() => {
-                    !playing && setIdle(true);
+                    reset();
+                    setRotating(false);
                 }}
-                onPointerMove={() => {
-                    if (timerRef.current) clearInterval(timerRef.current);
-                    timerRef.current = window.setTimeout(() => {
-                        setIdle(false);
-                    }, 1000); // idle time 3s
-                }}
+                onPointerMove={reset}
             >
                 <EffectComposer>
                     <Vignette eskil={false} offset={0.1} darkness={0.8} />
                 </EffectComposer>
                 <Environment />
-                <Scene toggle={toggle} />
+                <Scene />
             </Canvas>
         </>
     );

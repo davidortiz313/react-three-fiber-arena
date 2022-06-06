@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import { Environment as EnvironmentLoader } from "@react-three/drei";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useFrame, useThree } from "@react-three/fiber";
-import useStore from "../../store/store";
+import { state } from "./state";
+import useStore from "../../store/rotate-store";
 
 export const Controls: React.FC = () => {
-    const { controls, setControls } = useStore();
-
     const { camera, gl } = useThree();
 
     useEffect(() => {
@@ -16,19 +15,18 @@ export const Controls: React.FC = () => {
         _controls.enableDamping = true;
         _controls.enablePan = false;
         _controls.enableZoom = false;
-        _controls.enableRotate = false;
-
-        setControls(_controls);
+        state.controls = _controls;
 
         return () => {
             _controls.dispose();
         };
-    }, [camera, gl, setControls]);
+    }, [camera, gl]);
 
     useFrame(() => {
-        if (!controls) return;
-        controls.update();
+        if (!state.controls) return;
+        state.controls.update();
     });
+
     return null;
 };
 
