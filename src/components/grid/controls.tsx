@@ -1,5 +1,5 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from "three";
 import { state } from "../rotating/state";
@@ -7,8 +7,6 @@ import { state } from "../rotating/state";
 export const Controls: React.FC<{
     orbitRef: React.MutableRefObject<OrbitControls | null>;
 }> = ({ orbitRef }) => {
-    const [controls, setControls] = useState<OrbitControls>();
-
     const { camera, gl } = useThree();
 
     useEffect(() => {
@@ -25,7 +23,7 @@ export const Controls: React.FC<{
         return () => {
             _controls.dispose();
         };
-    }, [camera, gl, orbitRef, setControls]);
+    }, [camera, gl, orbitRef]);
 
     useFrame(() => {
         if (!state.controls) return;
