@@ -47,7 +47,7 @@ const Grid: React.FC = () => {
                     scene.background = new Color(0x000000);
                 }}
             >
-                {/* <EffectComposer multisampling={8}>
+                <EffectComposer multisampling={8}>
                     <Bloom
                         kernelSize={3}
                         luminanceThreshold={0}
@@ -60,10 +60,10 @@ const Grid: React.FC = () => {
                         luminanceSmoothing={0.5}
                         intensity={0.1}
                     />
-                </EffectComposer> */}
+                </EffectComposer>
                 <Environment />
                 <Scene />
-                {/* <CameraDefaultPos toggle={toggle} orbitRef={orbitRef} /> */}
+                <CameraDefaultPos toggle={toggle} orbitRef={orbitRef} />
                 <Controls orbitRef={orbitRef} />
             </Canvas>
 
