@@ -5,7 +5,7 @@ import { state } from "../utils/state";
 
 export function Edges({ pointData }: { pointData: any }) {
   const { grade, side } = useGridStore();
-  const { edgeOffset, ratio } = state;
+  const { edgeOffset, ratio, edgeGap } = state;
 
   const lines = useMemo(() => {
     const _lines: any[] = [];
@@ -19,7 +19,7 @@ export function Edges({ pointData }: { pointData: any }) {
           case "top":
             _lines.push(
               [
-                [x1, 0],
+                [x1, -edgeGap],
                 [x1, -edgeOffset],
               ],
               [
@@ -28,14 +28,14 @@ export function Edges({ pointData }: { pointData: any }) {
               ],
               [
                 [x2, -edgeOffset],
-                [x2, 0],
+                [x2, -edgeGap],
               ]
             );
             break;
           case "bottom":
             _lines.push(
               [
-                [x1, 1],
+                [x1, 1 + edgeGap],
                 [x1, 1 + edgeOffset],
               ],
               [
@@ -44,14 +44,14 @@ export function Edges({ pointData }: { pointData: any }) {
               ],
               [
                 [x2, 1 + edgeOffset],
-                [x2, 1],
+                [x2, 1 + edgeGap],
               ]
             );
             break;
           case "right":
             _lines.push(
               [
-                [1, y1],
+                [1 + edgeGap * ratio, y1],
                 [1 + edgeOffset * ratio, y1],
               ],
               [
@@ -60,14 +60,14 @@ export function Edges({ pointData }: { pointData: any }) {
               ],
               [
                 [1 + edgeOffset * ratio, y2],
-                [1, y2],
+                [1 + edgeGap * ratio, y2],
               ]
             );
             break;
           case "left":
             _lines.push(
               [
-                [0, y1],
+                [-edgeGap * ratio, y1],
                 [-edgeOffset * ratio, y1],
               ],
               [
@@ -76,7 +76,7 @@ export function Edges({ pointData }: { pointData: any }) {
               ],
               [
                 [-edgeOffset * ratio, y2],
-                [0, y2],
+                [-edgeGap * ratio, y2],
               ]
             );
             break;
@@ -84,7 +84,7 @@ export function Edges({ pointData }: { pointData: any }) {
       }
     }
     return _lines;
-  }, [grade, side, edgeOffset, pointData, ratio]);
+  }, [grade, side, edgeOffset, edgeGap, pointData, ratio]);
   return (
     <group>
       {lines.map(([pt1, pt2]: any, idx: number) => (

@@ -2,7 +2,8 @@ export const state: {
   [key: string]: any;
 } = {
   annotationHeight: 0,
-  edgeOffset: 0.03,
+  edgeOffset: 0.04,
+  edgeGap: 0.01,
   cornerLength: 0.04,
   subgrades: {
     center: ["vertical", "horizontal"],

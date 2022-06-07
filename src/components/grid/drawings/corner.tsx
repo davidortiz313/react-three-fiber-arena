@@ -19,11 +19,11 @@ export function Corner({ pointData }: { pointData: any }) {
             _lines.push(
               [
                 [-cornerLength * ratio, -cornerLength],
-                [-cornerLength * ratio, 0],
+                [-cornerLength * ratio, cornerLength * 0.5],
               ],
               [
                 [-cornerLength * ratio, -cornerLength],
-                [0, -cornerLength],
+                [cornerLength * 0.5 * ratio, -cornerLength],
               ]
             );
             break;
@@ -31,11 +31,11 @@ export function Corner({ pointData }: { pointData: any }) {
             _lines.push(
               [
                 [1 + cornerLength * ratio, -cornerLength],
-                [1 + cornerLength * ratio, 0],
+                [1 + cornerLength * ratio, cornerLength * 0.5],
               ],
               [
                 [1 + cornerLength * ratio, -cornerLength],
-                [1, -cornerLength],
+                [1 - cornerLength * 0.5 * ratio, -cornerLength],
               ]
             );
             break;
@@ -43,11 +43,11 @@ export function Corner({ pointData }: { pointData: any }) {
             _lines.push(
               [
                 [-cornerLength * ratio, 1 + cornerLength],
-                [-cornerLength * ratio, 1],
+                [-cornerLength * ratio, 1 - cornerLength * 0.5],
               ],
               [
                 [-cornerLength * ratio, 1 + cornerLength],
-                [0, 1 + cornerLength],
+                [cornerLength * 0.5 * ratio, 1 + cornerLength],
               ]
             );
             break;
@@ -55,11 +55,11 @@ export function Corner({ pointData }: { pointData: any }) {
             _lines.push(
               [
                 [1 + cornerLength * ratio, 1 + cornerLength],
-                [1 + cornerLength * ratio, 1],
+                [1 + cornerLength * ratio, 1 - cornerLength * 0.5],
               ],
               [
                 [1 + cornerLength * ratio, 1 + cornerLength],
-                [1, 1 + cornerLength],
+                [1 - cornerLength * 0.5 * ratio, 1 + cornerLength],
               ]
             );
             break;
