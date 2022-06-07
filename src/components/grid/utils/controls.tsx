@@ -1,32 +1,29 @@
-import React, { useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
+import React, { useEffect } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import useStore from "../../store/store";
+import * as THREE from "three";
+import { state } from "./state";
 
 export const Controls: React.FC = () => {
-  const { controls, setControls } = useStore();
-
   const { camera, gl } = useThree();
 
   useEffect(() => {
     const _controls = new OrbitControls(camera, gl.domElement);
-    _controls.target0.set(0, -0.1, 0);
-    _controls.dampingFactor = 0.05;
-    _controls.enableDamping = true;
-    _controls.enablePan = false;
-    _controls.enableZoom = false;
+    _controls.target.set(0, 0, 0);
+    _controls.enableDamping = false;
     _controls.enableRotate = false;
-
-    setControls(_controls);
+    _controls.mouseButtons.LEFT = THREE.MOUSE.PAN;
+    _controls.touches.ONE = THREE.TOUCH.PAN;
+    state.controls = _controls;
 
     return () => {
       _controls.dispose();
     };
-  }, [camera, gl, setControls]);
+  }, [camera, gl]);
 
   useFrame(() => {
-    if (!controls) return;
-    controls.update();
+    if (!state.controls) return;
+    state.controls.update();
   });
   return null;
 };
