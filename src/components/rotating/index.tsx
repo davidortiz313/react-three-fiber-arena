@@ -33,7 +33,7 @@ const Rotating: React.FC = () => {
           alpha: true,
           stencil: false,
         }}
-        camera={{ fov: 45, position: [0, 0, 2.2] }}
+        camera={{ fov: 45, position: [0, 0.1, 2.2] }}
         onCreated={({ gl, scene }) => {
           gl.outputEncoding = sRGBEncoding;
           gl.toneMapping = ACESFilmicToneMapping;
