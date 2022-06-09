@@ -64,9 +64,9 @@ void main(){
     col = max(col, 0.);
     col = mix(col, vec3(min(col.x*1.5, 1.), pow(col.x, 6.5), pow(col.x, 12.)), 
               dot(sin(rd.yxz*8. + sin(rd.zxy*8.)), vec3(.1666))+0.4);
-    // col = mix(col, vec3(col.x*col.x*.85, col.x, col.x*col.x*0.3),  
-    //          dot(sin(rd.yzx*4. + sin(rd.zxy*4.)), vec3(.1666))+0.25);
-    gl_FragColor = vec4( clamp(col, 0., 1.), 1.0 );
+    col = mix(col, vec3(col.x*col.x*.85, col.x, col.x*col.x*0.3),  
+             dot(sin(rd.yzx*4. + sin(rd.zxy*4.)), vec3(.1666))+0.25);
+    gl_FragColor = vec4( clamp(col, 0.2, 1.), 1.0 );
 
 }`;
 
@@ -96,7 +96,7 @@ export const Lines: React.FC<Props> = ({ thickness = 0.005, pts }) => {
   }, []);
   useFrame((_, delta) => {
     if (!mesh.current) return;
-    (mesh.current.material as any).uniforms.uTime.value += delta;
+    (mesh.current.material as any).uniforms.uTime.value += delta / 60;
   });
   return (
     <group>
