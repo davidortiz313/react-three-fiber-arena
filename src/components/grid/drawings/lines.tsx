@@ -96,7 +96,7 @@ export const Lines: React.FC<Props> = ({ thickness = 0.005, pts }) => {
   }, []);
   useFrame((_, delta) => {
     if (!mesh.current) return;
-    (mesh.current.material as any).uniforms.uTime.value += delta / 60;
+    (mesh.current.material as any).uniforms.uTime.value += delta / 30;
   });
   return (
     <group>
