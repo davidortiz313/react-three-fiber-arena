@@ -1,3 +1,5 @@
+import { Vector3 } from "three";
+
 export const state: {
   [key: string]: any;
 } = {
@@ -18,4 +20,8 @@ export const state: {
 
 state.getPos = (x: number, y: number) => {
   return [x - 0.5, (0.5 - y) * state.ratio, state.annotationHeight];
+};
+
+state._getPos = (x: number, y: number) => {
+  return new Vector3(x - 0.5, (0.5 - y) * state.ratio, state.annotationHeight);
 };
