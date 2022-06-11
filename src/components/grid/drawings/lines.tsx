@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { extend, MeshProps, useFrame } from "@react-three/fiber";
-import { Mesh, ShaderMaterial, Vector3 } from "three";
+import { Mesh, MeshBasicMaterial, ShaderMaterial, Vector3 } from "three";
 import { CurveGeometry } from "./CurveGeometry";
 extend({ CurveGeometry });
 
@@ -66,37 +66,30 @@ void main(){
               dot(sin(rd.yxz*8. + sin(rd.zxy*8.)), vec3(.1666))+0.4);
     col = mix(col, vec3(col.x*col.x*.85, col.x, col.x*col.x*0.3),  
              dot(sin(rd.yzx*4. + sin(rd.zxy*4.)), vec3(.1666))+0.25);
-    gl_FragColor = vec4( clamp(col, 0.2, 1.), 1.0 );
+    // gl_FragColor = vec4( clamp(col, 0.2, 1.), 1.0 );
+    gl_FragColor = vec4(0.0,vUv.y,0.,1.0);
 
 }`;
 
-const _fs = `
-uniform float uTime;
-varying vec3 vNormal;
-varying vec2 vUv;
-varying vec3 vPosition;
-void main(){
-    vec3 color = vec3(vNormal.x + tan(vUv.y * uTime), vUv.x, sin(1. + 2. * uTime));
-    gl_FragColor = vec4(color, 1.);
-}
-`;
-
 export const Lines: React.FC<Props> = ({ thickness = 0.005, pts }) => {
-  const mesh = useRef<Mesh>(null);
+  const mesh = useRef();
   const uniforms = {
     uTime: { value: 0 },
   };
   useEffect(() => {
     if (!mesh.current) return;
-    mesh.current.material = new ShaderMaterial({
-      uniforms,
-      vertexShader: vs,
-      fragmentShader: fs,
+    (mesh.current as Mesh).material = new MeshBasicMaterial({
+      color: 0x00ff00,
     });
+    //  new ShaderMaterial({
+    //   uniforms,
+    //   vertexShader: vs,
+    //   fragmentShader: fs,
+    // });
   }, []);
   useFrame((_, delta) => {
     if (!mesh.current) return;
-    (mesh.current.material as any).uniforms.uTime.value += delta / 30;
+    // (mesh.current as any).material.uniforms.uTime.value += delta / 30;
   });
   return (
     <group>

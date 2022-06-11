@@ -1,26 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./scene";
-import { Environment } from "../environment/environment";
 import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
 import "./grid.css";
-import useGridStore from "../../store/grid-store";
 import { Controls } from "./utils/controls";
 import { CameraDefaultPos } from "./utils/camera-default-pos";
 import { state } from "./utils/state";
+import { GridContext, useGridState } from "../../context/project-context";
 
 const Grid: React.FC = () => {
-  const { dataIdx, setDataIdx, setSide, side, kind, setKind, grade, setGrade } =
-    useGridStore();
+  const gridState = useGridState();
+  const {
+    data: { dataIdx, kind, side, grade },
+    updateData,
+  } = gridState;
+
   const [toggle, setToggle] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    if (kind === "center") setGrade("vertical");
-    if (kind === "edge") setGrade("wear");
-    if (kind === "surface") setGrade("spotting");
-    if (kind === "corner") setGrade("rounding");
-  }, [kind, setGrade]);
+    if (kind === "center") updateData({ grade: "vertical" });
+    if (kind === "edge") updateData({ grade: "wear" });
+    if (kind === "surface") updateData({ grade: "spotting" });
+    if (kind === "corner") updateData({ grade: "rounding" });
+  }, [kind, updateData]);
 
   return (
     <>
@@ -41,7 +44,7 @@ const Grid: React.FC = () => {
           stencil: false,
         }}
         camera={{ fov: 45, position: [0, 0, 2.2] }}
-        onCreated={({ gl, scene }) => {
+        onCreated={({ gl, scene }: any) => {
           const _canvas = canvasRef.current! as HTMLCanvasElement;
           state.screenSize = [_canvas.clientWidth, _canvas.clientHeight];
           gl.outputEncoding = sRGBEncoding;
@@ -50,8 +53,9 @@ const Grid: React.FC = () => {
           scene.background = new Color(0x000000);
         }}
       >
-        <Environment />
-        <Scene />
+        <GridContext.Provider value={gridState}>
+          <Scene />
+        </GridContext.Provider>
         <CameraDefaultPos toggle={toggle} />
         <Controls />
       </Canvas>
@@ -66,7 +70,7 @@ const Grid: React.FC = () => {
               id="frontSide"
               checked={side === "front"}
               onChange={(e) => {
-                e.target.checked && setSide("front");
+                e.target.checked && updateData({ side: "front" });
               }}
             />
             <label htmlFor="frontSide">Front</label>
@@ -80,7 +84,7 @@ const Grid: React.FC = () => {
                 name="side"
                 checked={side === "back"}
                 onChange={(e) => {
-                  e.target.checked && setSide("back");
+                  e.target.checked && updateData({ side: "back" });
                 }}
               />
               <label htmlFor="backSide">Back</label>
@@ -94,7 +98,7 @@ const Grid: React.FC = () => {
               <select
                 className="form-select"
                 onChange={(e) => {
-                  setDataIdx(e.target.value);
+                  updateData({ dataIdx: e.target.value });
                 }}
                 value={dataIdx}
               >
@@ -112,7 +116,7 @@ const Grid: React.FC = () => {
               <select
                 className="form-select"
                 onChange={(e) => {
-                  setKind(e.target.value);
+                  updateData({ kind: e.target.value });
                 }}
                 value={kind}
               >
@@ -132,7 +136,7 @@ const Grid: React.FC = () => {
               <select
                 className="form-select"
                 onChange={(e) => {
-                  setGrade(e.target.value);
+                  updateData({ grade: e.target.value });
                 }}
                 value={grade}
               >

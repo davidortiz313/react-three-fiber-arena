@@ -1,13 +1,8 @@
 import React, { Suspense, useEffect, useRef } from "react";
+// @ts-ignore
 import { GroupProps, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import {
-  Group,
-  Mesh,
-  MeshStandardMaterial,
-  sRGBEncoding,
-  TextureLoader,
-} from "three";
+import { Mesh, MeshStandardMaterial, sRGBEncoding, TextureLoader } from "three";
 
 interface Props extends GroupProps {
   cardFront: string;
@@ -22,7 +17,7 @@ export const Card: React.FC<Props> = ({
   labelBack,
   ...rest
 }) => {
-  const groupRef = useRef<Group | null>(null);
+  const groupRef = useRef<any>(null);
   const gltf = useLoader(GLTFLoader, "./assets/models/card.gltf");
 
   const [cardFrontMap, cardBackMap, labelFrontMap, labelBackMap] = useLoader(
@@ -41,7 +36,7 @@ export const Card: React.FC<Props> = ({
 
   // add textures
   useEffect(() => {
-    gltf.scene.traverse((child) => {
+    gltf.scene.traverse((child: any) => {
       if (child instanceof Mesh) {
         switch (child.name) {
           case "card_front":

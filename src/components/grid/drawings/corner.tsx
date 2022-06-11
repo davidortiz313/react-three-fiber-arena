@@ -1,11 +1,13 @@
 import { useMemo } from "react";
-import useGridStore from "../../../store/grid-store";
 import { Line } from "./line";
 import { state } from "../utils/state";
+import { useGridContext } from "../../../context/project-context";
 
 export function Corner({ pointData }: { pointData: any }) {
   const { cornerLength, ratio } = state;
-  const { grade, side } = useGridStore();
+  const {
+    data: { grade, side },
+  } = useGridContext();
 
   const lines = useMemo(() => {
     const _lines: any[] = [];

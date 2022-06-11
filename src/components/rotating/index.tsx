@@ -1,12 +1,11 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./scene";
 import { Environment } from "./environment";
 import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
-import useStore from "../../store/rotate-store";
 
 const Rotating: React.FC = () => {
-  const { setRotating } = useStore();
+  const [rotating, setRotating] = useState(true);
   const timerRef = useRef<number | null>(null);
   const reset = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -17,7 +16,14 @@ const Rotating: React.FC = () => {
   }, [setRotating]);
 
   return (
-    <>
+    <div
+      style={{ height: "100%" }}
+      onPointerDown={() => {
+        reset();
+        setRotating(false);
+      }}
+      onPointerMove={reset}
+    >
       <Canvas
         style={{
           position: "absolute",
@@ -40,16 +46,11 @@ const Rotating: React.FC = () => {
           gl.toneMappingExposure = 1.5;
           scene.background = new Color(0xffffff);
         }}
-        onPointerDown={() => {
-          reset();
-          setRotating(false);
-        }}
-        onPointerMove={reset}
       >
         <Environment />
-        <Scene />
+        <Scene rotating={rotating} />
       </Canvas>
-    </>
+    </div>
   );
 };
 

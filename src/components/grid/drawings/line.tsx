@@ -15,7 +15,7 @@ interface Props {
 export const Line: React.FC<Props> = ({
   pt1 = [0, 0, 0],
   pt2 = [0, 0, 1],
-  color = "#02a137",
+  color = "#0f5c05",
 }) => {
   const line = useMemo(() => {
     const geo = new LineGeometry();

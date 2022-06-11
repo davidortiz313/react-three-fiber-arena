@@ -1,19 +1,16 @@
 import { useFrame } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
-import { Group } from "three";
-import useStore from "../../store/rotate-store";
 import { Card } from "./card";
 import { state } from "./state";
 
-export const Scene: React.FC = () => {
+export const Scene: React.FC<{ rotating: boolean }> = ({ rotating }) => {
   console.log("Rotating Scene");
-  const { rotating } = useStore();
 
-  const groupRef = useRef<Group | null>(null);
+  const groupRef = useRef<any>();
 
   // rotate the model if not idle state
   useFrame((_, delta) => {
-    if (rotating) groupRef.current!.rotation.y += 0.01;
+    if (rotating) groupRef.current.rotation.y += 0.01;
   });
 
   useEffect(() => {

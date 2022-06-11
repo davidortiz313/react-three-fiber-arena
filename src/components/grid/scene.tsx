@@ -2,16 +2,20 @@ import React from "react";
 import * as THREE from "three";
 import { useLoader } from "@react-three/fiber";
 import { useEffect, useState } from "react";
-import useGridStore from "../../store/grid-store";
 import { data } from "./data";
 import { state } from "./utils/state";
 import { Corner } from "./drawings/corner";
 import { Edges } from "./drawings/edges";
 import { Surface } from "./drawings/surface";
 import { Center } from "./drawings/center";
+import { Effects, Main } from "./utils/effects";
+import { useGridContext } from "../../context/project-context";
 
 export const Scene: React.FC = () => {
-  const { dataIdx, side, kind } = useGridStore();
+  const {
+    data: { dataIdx, side, kind },
+  } = useGridContext();
+
   const [frontMap, backMap] = useLoader(THREE.TextureLoader, [
     "./assets/front.jpg",
     "./assets/back.jpg",
@@ -24,16 +28,31 @@ export const Scene: React.FC = () => {
   state.ratio = frontMap.image.height / frontMap.image.width;
 
   return (
-    <group>
-      <mesh>
-        <planeBufferGeometry args={[1, 1 * state.ratio]} />
-        <meshBasicMaterial map={map} />
-      </mesh>
+    <>
+      <Main>
+        <pointLight />
+        <ambientLight />
+        <mesh>
+          <planeBufferGeometry args={[1, 1 * state.ratio]} />
+          <meshBasicMaterial map={map} />
+        </mesh>
+        {kind === "edge" && <Edges pointData={data[parseInt(dataIdx!)]} />}
+        {kind === "surface" && <Surface pointData={data[parseInt(dataIdx!)]} />}
+        {kind === "center" && <Center pointData={data[parseInt(dataIdx!)]} />}
+        {kind === "corner" && <Corner pointData={data[parseInt(dataIdx!)]} />}
+      </Main>
 
-      {kind === "edge" && <Edges pointData={data[parseInt(dataIdx)]} />}
-      {kind === "surface" && <Surface pointData={data[parseInt(dataIdx)]} />}
-      {kind === "center" && <Center pointData={data[parseInt(dataIdx)]} />}
-      {kind === "corner" && <Corner pointData={data[parseInt(dataIdx)]} />}
-    </group>
+      <Effects>
+        <ambientLight intensity={1} />
+        <mesh>
+          <planeBufferGeometry args={[0.9, 0.9 * state.ratio]} />
+          <meshBasicMaterial color="#0c5c03" />
+        </mesh>
+        {kind === "edge" && <Edges pointData={data[parseInt(dataIdx!)]} />}
+        {kind === "surface" && <Surface pointData={data[parseInt(dataIdx!)]} />}
+        {kind === "center" && <Center pointData={data[parseInt(dataIdx!)]} />}
+        {kind === "corner" && <Corner pointData={data[parseInt(dataIdx!)]} />}
+      </Effects>
+    </>
   );
 };

@@ -3,7 +3,7 @@ import { Vector3 } from "three";
 export const state: {
   [key: string]: any;
 } = {
-  annotationHeight: 0,
+  annotationHeight: 0.01,
   edgeOffset: 0.04,
   edgeGap: 0.01,
   cornerLength: 0.04,
