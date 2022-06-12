@@ -20,9 +20,8 @@ export const Line: React.FC<Props> = ({
   const line = useMemo(() => {
     const geo = new LineGeometry();
     const matLine = new LineMaterial({
-      linewidth: 4, // in world units with size attenuation, pixels otherwise
+      linewidth: 3,
       dashed: false,
-      // alphaToCoverage: true,
     });
     matLine.color = new THREE.Color(color);
     matLine.resolution.set(state.screenSize[0], state.screenSize[1]);

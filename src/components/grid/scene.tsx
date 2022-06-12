@@ -36,21 +36,20 @@ export const Scene: React.FC = () => {
           <planeBufferGeometry args={[1, 1 * state.ratio]} />
           <meshBasicMaterial map={map} />
         </mesh>
-        {kind === "edge" && <Edges pointData={data[parseInt(dataIdx!)]} />}
         {kind === "surface" && <Surface pointData={data[parseInt(dataIdx!)]} />}
         {kind === "center" && <Center pointData={data[parseInt(dataIdx!)]} />}
-        {kind === "corner" && <Corner pointData={data[parseInt(dataIdx!)]} />}
       </Main>
 
       <Effects>
         <ambientLight intensity={1} />
-        <mesh>
-          <planeBufferGeometry args={[0.9, 0.9 * state.ratio]} />
+        <directionalLight />
+        {/* <mesh>
+          <planeBufferGeometry args={[1, 1 * state.ratio]} />
           <meshBasicMaterial color="#0c5c03" />
-        </mesh>
+        </mesh> */}
         {kind === "edge" && <Edges pointData={data[parseInt(dataIdx!)]} />}
-        {kind === "surface" && <Surface pointData={data[parseInt(dataIdx!)]} />}
-        {kind === "center" && <Center pointData={data[parseInt(dataIdx!)]} />}
+        {/* {kind === "surface" && <Surface pointData={data[parseInt(dataIdx!)]} />} */}
+        {/* {kind === "center" && <Center pointData={data[parseInt(dataIdx!)]} />} */}
         {kind === "corner" && <Corner pointData={data[parseInt(dataIdx!)]} />}
       </Effects>
     </>

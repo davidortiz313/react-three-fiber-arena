@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Line } from "./line";
 import { state } from "../utils/state";
-// import { Lines } from "./lines";
+import { Lines } from "./lines";
 import { useGridContext } from "../../../context/project-context";
 
 export function Edges({ pointData }: { pointData: any }) {

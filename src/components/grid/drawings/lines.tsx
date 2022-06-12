@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { extend, MeshProps, useFrame } from "@react-three/fiber";
-import { Mesh, MeshBasicMaterial, ShaderMaterial, Vector3 } from "three";
+import { Mesh, ShaderMaterial, Vector3 } from "three";
+// @ts-ignore
+import glsl from "glslify";
 import { CurveGeometry } from "./CurveGeometry";
 extend({ CurveGeometry });
 
@@ -9,7 +11,7 @@ interface Props extends MeshProps {
   pts: Vector3[];
 }
 
-const vs = `
+const vs = glsl`
 varying vec3 vNormal;
 varying vec2 vUv;
 varying vec3 vPosition;
@@ -20,7 +22,7 @@ void main(){
     vPosition = position;
 }`;
 
-const fs = `
+const fs = glsl`
 uniform float uTime;
 varying vec3 vNormal;
 varying vec2 vUv;
@@ -41,34 +43,32 @@ float map(vec3 p)
 }
 
 void main(){
-    vec2 uv = vUv;//(fragCoord - iResolution.xy*.5 )/iResolution.y;
-    vec3 rd = normalize(vec3(uv, (1.-dot(uv, uv)*.5)*.5)); 
-    vec3 ro = vec3(0, 0, uTime*1.26), col = vec3(0), sp;
+  vec2 uv = vUv;
+  vec3 rd = normalize(vec3(uv, (1.-dot(uv, uv)*.5)*.5)); 
+  vec3 ro = vec3(0, 0, uTime*1.26), col = vec3(0), sp;
 	float cs = cos( uTime*0.175 ), si = sin( uTime*0.175 );    
     rd.xz = mat2(cs, si,-si, cs)*rd.xz;
 	float t=0.06, layers=0., d=0., aD;
-    float thD = 0.02;
+  float thD = 0.02;
 	for(float i=0.; i<2000.; i++)	
 	{
-        if(layers>15. || col.x > 1. || t>5.6) break;
-        sp = ro + rd*t;
-        d = map(sp); 
-        aD = (thD-abs(d)*15./16.)/thD;
-        if(aD>0.) 
+    if(layers>15. || col.x > 1. || t>5.6) break;
+    sp = ro + rd*t;
+    d = map(sp); 
+    aD = (thD-abs(d)*15./16.)/thD;
+    if(aD>0.) 
 		{ 
             col += aD*aD*(3.-2.*aD)/(1. + t*0.25)*.2; 
             layers++; 
 		}
         t += max(d*.7, thD*1.5) * dstepf; 
 	}
-    col = max(col, 0.);
-    col = mix(col, vec3(min(col.x*1.5, 1.), pow(col.x, 6.5), pow(col.x, 12.)), 
-              dot(sin(rd.yxz*8. + sin(rd.zxy*8.)), vec3(.1666))+0.4);
-    col = mix(col, vec3(col.x*col.x*.85, col.x, col.x*col.x*0.3),  
-             dot(sin(rd.yzx*4. + sin(rd.zxy*4.)), vec3(.1666))+0.25);
-    // gl_FragColor = vec4( clamp(col, 0.2, 1.), 1.0 );
-    gl_FragColor = vec4(0.0,vUv.y,0.,1.0);
-
+  col = max(col, 0.);
+  col = mix(col, vec3(min(col.x*1.5, 1.), pow(col.x, 6.5), pow(col.x, 12.)), 
+            dot(sin(rd.yxz*8. + sin(rd.zxy*8.)), vec3(.1666))+0.4);
+  col = mix(col, vec3(col.x*col.x*.85, col.x, col.x*col.x*0.3),  
+            dot(sin(rd.yzx*4. + sin(rd.zxy*4.)), vec3(.1666))+0.25);
+  gl_FragColor = vec4( clamp(col, 0.2, 1.), 1.0 );
 }`;
 
 export const Lines: React.FC<Props> = ({ thickness = 0.005, pts }) => {
@@ -78,18 +78,15 @@ export const Lines: React.FC<Props> = ({ thickness = 0.005, pts }) => {
   };
   useEffect(() => {
     if (!mesh.current) return;
-    (mesh.current as Mesh).material = new MeshBasicMaterial({
-      color: 0x00ff00,
+    (mesh.current as Mesh).material = new ShaderMaterial({
+      uniforms,
+      vertexShader: vs,
+      fragmentShader: fs,
     });
-    //  new ShaderMaterial({
-    //   uniforms,
-    //   vertexShader: vs,
-    //   fragmentShader: fs,
-    // });
   }, []);
   useFrame((_, delta) => {
     if (!mesh.current) return;
-    // (mesh.current as any).material.uniforms.uTime.value += delta / 30;
+    (mesh.current as any).material.uniforms.uTime.value += delta / 30;
   });
   return (
     <group>
