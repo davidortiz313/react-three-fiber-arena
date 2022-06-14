@@ -1,11 +1,19 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
 import { FXAAShader } from "three/examples/jsm/shaders/FXAAShader";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Scene, ShaderMaterial, Vector2 } from "three";
+import {
+  Layers,
+  Mesh,
+  MeshBasicMaterial,
+  PlaneGeometry,
+  Scene,
+  ShaderMaterial,
+  Vector2,
+} from "three";
 // @ts-ignore
 import glsl from "glslify";
 
@@ -24,14 +32,23 @@ void main() {
     gl_FragColor = ( texture2D( baseTexture, vUv ) + vec4( 1.0 ) * texture2D( bloomTexture, vUv ) );
 }`;
 
-export function Effects({ children }: any) {
+export function Effects({ meshRef, children }: any) {
   const { gl, camera, size } = useThree();
   const sceneRef = useRef();
-  const composerRef = useRef<EffectComposer>();
+  const stateRef = useRef<any>({
+    darkMat: new MeshBasicMaterial({ color: "black" }),
+  });
+  const state = stateRef.current;
 
   useEffect(() => {
+    state.originMat = meshRef.current.material;
     const scene = sceneRef.current! as Scene;
-    const effectComposer = new EffectComposer(gl);
+    state.scene = scene;
+
+    state.bloomLayer = new Layers();
+    state.bloomLayer.set(1);
+
+    state.bloomComposer = new EffectComposer(gl);
     const renderPass = new RenderPass(scene, camera);
     const unrealBloomPass = new UnrealBloomPass(
       new Vector2(size.width, size.height),
@@ -46,11 +63,19 @@ export function Effects({ children }: any) {
       1 / (size.width * pixelRatio);
     fxaaPass.material.uniforms["resolution"].value.y =
       1 / (size.height * pixelRatio);
+
+    state.bloomComposer.addPass(renderPass);
+    state.bloomComposer.addPass(unrealBloomPass);
+    state.bloomComposer.addPass(fxaaPass);
+
+    state.materials = {};
+    state.textMap = { base: null, normal: null };
+
     const finalPass = new ShaderPass(
       new ShaderMaterial({
         uniforms: {
           baseTexture: { value: null },
-          bloomTexture: { value: effectComposer.renderTarget2.texture },
+          bloomTexture: { value: state.bloomComposer.renderTarget2.texture },
         },
         vertexShader: vs,
         fragmentShader: fs,
@@ -58,32 +83,25 @@ export function Effects({ children }: any) {
       }),
       "baseTexture"
     );
+    state.finalComposer = new EffectComposer(gl);
+    state.finalComposer.addPass(renderPass);
+    state.finalComposer.addPass(finalPass);
 
-    effectComposer.addPass(renderPass);
-    effectComposer.addPass(unrealBloomPass);
-    effectComposer.addPass(fxaaPass);
-    // effectComposer.addPass(finalPass);
-    effectComposer.setSize(size.width, size.height);
-    composerRef.current = effectComposer;
-  }, [size, camera, gl]);
+    state.bloomComposer.setSize(size.width, size.height);
+  }, [size, camera, gl, state, meshRef]);
 
   useFrame(({ clock }) => {
-    if (composerRef.current) {
-      composerRef.current.render();
-      (composerRef.current.passes[1] as UnrealBloomPass).strength =
+    const { bloomComposer, finalComposer, scene } = state;
+    if (bloomComposer && finalComposer && scene) {
+      meshRef.current.material = state.darkMat;
+      bloomComposer.render();
+
+      meshRef.current.material = state.originMat;
+      finalComposer.render();
+
+      (bloomComposer.passes[1] as UnrealBloomPass).strength =
         1.5 + Math.sin(clock.getElapsedTime() * 5);
     }
   }, 1);
   return <scene ref={sceneRef}>{children}</scene>;
-}
-
-export function Main({ children }: any) {
-  const scene = useRef();
-  const { gl, camera } = useThree();
-  useFrame(() => {
-    gl.autoClear = false;
-    gl.clearDepth();
-    gl.render(scene.current!, camera);
-  }, 2);
-  return <scene ref={scene}>{children}</scene>;
 }

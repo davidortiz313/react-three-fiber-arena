@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./scene";
-import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
+import {
+  ACESFilmicToneMapping,
+  Color,
+  sRGBEncoding,
+  WebGLRenderer,
+} from "three";
 import "./grid.css";
 import { Controls } from "./utils/controls";
 import { CameraDefaultPos } from "./utils/camera-default-pos";
@@ -49,7 +54,7 @@ const Grid: React.FC = () => {
           state.screenSize = [_canvas.clientWidth, _canvas.clientHeight];
           gl.outputEncoding = sRGBEncoding;
           gl.toneMapping = ACESFilmicToneMapping;
-          gl.toneMappingExposure = 1.5;
+          gl.toneMappingExposure = 3;
           scene.background = new Color(0x000000);
         }}
       >

@@ -15,7 +15,7 @@ interface Props {
 export const Line: React.FC<Props> = ({
   pt1 = [0, 0, 0],
   pt2 = [0, 0, 1],
-  color = "#0f5c05",
+  color = "#063300",
 }) => {
   const line = useMemo(() => {
     const geo = new LineGeometry();
@@ -27,6 +27,7 @@ export const Line: React.FC<Props> = ({
     matLine.resolution.set(state.screenSize[0], state.screenSize[1]);
     geo.setPositions([...pt1, ...pt2]);
     const _line = new Line2(geo, matLine);
+    _line.layers.enable(1);
     _line.computeLineDistances();
     return _line;
   }, [pt1, pt2, color]);
