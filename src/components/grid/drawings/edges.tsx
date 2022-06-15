@@ -115,16 +115,16 @@ export function Edges({ pointData }: { pointData: any }) {
   }, [grade, side, edgeOffset, edgeGap, pointData, ratio]);
   return (
     <group>
-      {lines.map(([pt1, pt2]: any, idx: number) => (
+      {/* {lines.map(([pt1, pt2]: any, idx: number) => (
         <Line
           key={idx}
           pt1={state.getPos(pt1[0], pt1[1])}
           pt2={state.getPos(pt2[0], pt2[1])}
         />
-      ))}
-      {/* {points.map((point: any, index: number) => (
-        <Lines key={index} pts={point} />
       ))} */}
+      {points.map((point: any, index: number) => (
+        <Lines key={index} pts={point} />
+      ))}
     </group>
   );
 }

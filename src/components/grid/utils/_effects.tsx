@@ -99,8 +99,8 @@ export function Effects({ meshRef, children }: any) {
       meshRef.current.material = state.originMat;
       finalComposer.render();
 
-      (bloomComposer.passes[1] as UnrealBloomPass).strength =
-        1.5 + Math.sin(clock.getElapsedTime() * 5);
+      // (bloomComposer.passes[1] as UnrealBloomPass).strength =
+      //   1.5 + Math.sin(clock.getElapsedTime() * 5);
     }
   }, 1);
   return <scene ref={sceneRef}>{children}</scene>;

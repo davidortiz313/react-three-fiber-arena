@@ -43,9 +43,9 @@ float map(vec3 p)
 }
 
 void main(){
-  vec2 uv = vUv;
+  vec2 uv = vUv * 6.;
   vec3 rd = normalize(vec3(uv, (1.-dot(uv, uv)*.5)*.5)); 
-  vec3 ro = vec3(0, 0, uTime*1.26), col = vec3(0), sp;
+  vec3 ro = vec3(0, 0, uTime*2.26), col = vec3(0), sp;
 	float cs = cos( uTime*0.175 ), si = sin( uTime*0.175 );    
     rd.xz = mat2(cs, si,-si, cs)*rd.xz;
 	float t=0.06, layers=0., d=0., aD;
@@ -58,8 +58,8 @@ void main(){
     aD = (thD-abs(d)*15./16.)/thD;
     if(aD>0.) 
 		{ 
-            col += aD*aD*(3.-2.*aD)/(1. + t*0.25)*.2; 
-            layers++; 
+      col += aD*aD*(3.-2.*aD)/(1. + t*0.25)*.2; 
+      layers++; 
 		}
         t += max(d*.7, thD*1.5) * dstepf; 
 	}
@@ -68,7 +68,7 @@ void main(){
             dot(sin(rd.yxz*8. + sin(rd.zxy*8.)), vec3(.1666))+0.4);
   col = mix(col, vec3(col.x*col.x*.85, col.x, col.x*col.x*0.3),  
             dot(sin(rd.yzx*4. + sin(rd.zxy*4.)), vec3(.1666))+0.25);
-  gl_FragColor = vec4( clamp(col, 0.2, 1.), 1.0 );
+  gl_FragColor = vec4( vec3(0.,1.,0.) *  clamp(col, 0.2, 0.8), 1.0 );
 }`;
 
 export const Lines: React.FC<Props> = ({ thickness = 0.005, pts }) => {
