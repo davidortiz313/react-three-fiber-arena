@@ -11,6 +11,7 @@ import { Center } from "./drawings/center";
 // import { Effects , Main} from "./utils/effects";
 import { Effects } from "./utils/_effects";
 import { useGridContext } from "../../context/project-context";
+import { Auto } from "./drawings/auto";
 
 export const Scene: React.FC = () => {
   const {
@@ -41,6 +42,7 @@ export const Scene: React.FC = () => {
       {kind === "surface" && <Surface pointData={data[parseInt(dataIdx!)]} />}
       {kind === "center" && <Center pointData={data[parseInt(dataIdx!)]} />}
       {kind === "corner" && <Corner pointData={data[parseInt(dataIdx!)]} />}
+      {kind === "auto" && <Auto pointData={data[parseInt(dataIdx!)]} />}
     </Effects>
   );
 };
