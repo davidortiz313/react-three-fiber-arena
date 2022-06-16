@@ -36,7 +36,7 @@ export function ShaderToy({ edges }: { edges: Vector4[] }) {
       fragmentShader: `#define lenOfEdges ${edges.length} \n ${fragmentShader}`,
       transparent: true,
     });
-  }, []);
+  }, [edges]);
   useFrame((_, delta) => {
     if (!mesh.current) return;
     (mesh.current as any).material.uniforms.uTime.value += delta;
