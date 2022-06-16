@@ -33,8 +33,8 @@ void main() {
 }`;
 
 export function Effects({ meshRef, children }: any) {
-  const { gl, camera, size } = useThree();
-  const sceneRef = useRef();
+  const { gl, camera, scene, size } = useThree();
+
   const stateRef = useRef<any>({
     darkMat: new MeshBasicMaterial({ color: "black" }),
   });
@@ -42,8 +42,6 @@ export function Effects({ meshRef, children }: any) {
 
   useEffect(() => {
     state.originMat = meshRef.current.material;
-    const scene = sceneRef.current! as Scene;
-    state.scene = scene;
 
     state.bloomLayer = new Layers();
     state.bloomLayer.set(1);
@@ -91,7 +89,7 @@ export function Effects({ meshRef, children }: any) {
   }, [size, camera, gl, state, meshRef]);
 
   useFrame(({ clock }) => {
-    const { bloomComposer, finalComposer, scene } = state;
+    const { bloomComposer, finalComposer } = state;
     if (bloomComposer && finalComposer && scene) {
       meshRef.current.material = state.darkMat;
       bloomComposer.render();
@@ -99,9 +97,9 @@ export function Effects({ meshRef, children }: any) {
       meshRef.current.material = state.originMat;
       finalComposer.render();
 
-      // (bloomComposer.passes[1] as UnrealBloomPass).strength =
-      //   1.5 + Math.sin(clock.getElapsedTime() * 5);
+      (bloomComposer.passes[1] as UnrealBloomPass).strength =
+        1.5 + Math.sin(clock.getElapsedTime() * 5);
     }
   }, 1);
-  return <scene ref={sceneRef}>{children}</scene>;
+  return null;
 }

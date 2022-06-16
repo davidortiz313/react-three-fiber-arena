@@ -3,6 +3,8 @@ import { Line } from "./line";
 import { state } from "../utils/state";
 import { Lines } from "./lines";
 import { useGridContext } from "../../../context/project-context";
+import { ShaderToy } from "../shader-toy";
+import { Vector4 } from "three";
 
 export function Edges({ pointData }: { pointData: any }) {
   const {
@@ -111,8 +113,23 @@ export function Edges({ pointData }: { pointData: any }) {
         }
       }
     }
-    return { lines: _lines, points: _pts };
+    return {
+      // lines: _lines,
+      lines: _lines.map(
+        ([pt1, pt2]: any) =>
+          new Vector4(
+            state.getPos(pt1[0], pt1[1]).x,
+            state.getPos(pt1[0], pt1[1]).y,
+
+            state.getPos(pt2[0], pt2[1]).x,
+            state.getPos(pt2[0], pt2[1]).y
+          )
+      ),
+      points: _pts,
+    };
   }, [grade, side, edgeOffset, edgeGap, pointData, ratio]);
+
+  console.log(lines);
   return (
     <group>
       {/* {lines.map(([pt1, pt2]: any, idx: number) => (
@@ -122,9 +139,10 @@ export function Edges({ pointData }: { pointData: any }) {
           pt2={state.getPos(pt2[0], pt2[1])}
         />
       ))} */}
-      {points.map((point: any, index: number) => (
+      <ShaderToy edges={lines} />
+      {/* {points.map((point: any, index: number) => (
         <Lines key={index} pts={point} />
-      ))}
+      ))} */}
     </group>
   );
 }

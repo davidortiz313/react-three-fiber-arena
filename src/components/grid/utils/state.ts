@@ -18,8 +18,12 @@ export const state: {
   screenSize: [window.innerWidth, window.innerHeight],
 };
 
+// state.getPos = (x: number, y: number) => {
+//   return [x - 0.5, (0.5 - y) * state.ratio, state.annotationHeight];
+// };
+
 state.getPos = (x: number, y: number) => {
-  return [x - 0.5, (0.5 - y) * state.ratio, state.annotationHeight];
+  return { x: 1 / 12 + (10 / 12) * x, y: 11 / 12 - (10 / 12) * y };
 };
 
 state._getPos = (x: number, y: number) => {

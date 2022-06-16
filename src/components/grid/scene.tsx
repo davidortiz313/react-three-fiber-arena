@@ -3,15 +3,14 @@ import * as THREE from "three";
 import { useLoader } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 import { data } from "./data";
-import { state } from "./utils/state";
 import { Corner } from "./drawings/corner";
 import { Edges } from "./drawings/edges";
 import { Surface } from "./drawings/surface";
 import { Center } from "./drawings/center";
-// import { Effects , Main} from "./utils/effects";
-import { Effects } from "./utils/_effects";
 import { useGridContext } from "../../context/project-context";
 import { Auto } from "./drawings/auto";
+import { ShaderToy } from "./shader-toy";
+import { state } from "./utils/state";
 
 export const Scene: React.FC = () => {
   const {
@@ -31,7 +30,7 @@ export const Scene: React.FC = () => {
   state.ratio = frontMap.image.height / frontMap.image.width;
 
   return (
-    <Effects meshRef={meshRef}>
+    <group>
       <mesh ref={meshRef}>
         <planeBufferGeometry args={[1, 1 * state.ratio]} />
         <meshBasicMaterial map={map} />
@@ -43,35 +42,7 @@ export const Scene: React.FC = () => {
       {kind === "center" && <Center pointData={data[parseInt(dataIdx!)]} />}
       {kind === "corner" && <Corner pointData={data[parseInt(dataIdx!)]} />}
       {kind === "auto" && <Auto pointData={data[parseInt(dataIdx!)]} />}
-    </Effects>
+      {/* <Effects meshRef={meshRef} /> */}
+    </group>
   );
 };
-
-//   return (
-//     <>
-//       <Main>
-//         <pointLight />
-//         <ambientLight />
-//         <mesh>
-//           <planeBufferGeometry args={[1, 1 * state.ratio]} />
-//           <meshBasicMaterial map={map} depthTest={false} />
-//         </mesh>
-//         {/* {kind === "surface" && <Surface pointData={data[parseInt(dataIdx!)]} />}
-//         {kind === "center" && <Center pointData={data[parseInt(dataIdx!)]} />} */}
-//       </Main>
-
-//       <Effects>
-//         <ambientLight intensity={1} />
-//         <directionalLight />
-//         {/* <mesh>
-//           <planeBufferGeometry args={[1, 1 * state.ratio]} />
-//           <meshBasicMaterial color="#0c5c03" />
-//         </mesh> */}
-//         {kind === "edge" && <Edges pointData={data[parseInt(dataIdx!)]} />}
-//         {kind === "surface" && <Surface pointData={data[parseInt(dataIdx!)]} />}
-//         {kind === "center" && <Center pointData={data[parseInt(dataIdx!)]} />}
-//         {kind === "corner" && <Corner pointData={data[parseInt(dataIdx!)]} />}
-//       </Effects>
-//     </>
-//   );
-// };
