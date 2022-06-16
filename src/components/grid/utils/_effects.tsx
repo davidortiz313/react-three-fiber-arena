@@ -98,7 +98,7 @@ export function Effects({ meshRef, children }: any) {
       finalComposer.render();
 
       (bloomComposer.passes[1] as UnrealBloomPass).strength =
-        1.5 + Math.sin(clock.getElapsedTime() * 5);
+        0.1 + Math.sin(clock.getElapsedTime());
     }
   }, 1);
   return null;

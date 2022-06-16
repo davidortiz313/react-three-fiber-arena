@@ -3,6 +3,8 @@ import { Line } from "./line";
 import { state } from "../utils/state";
 import { useGridContext } from "../../../context/project-context";
 import { Lines } from "./lines";
+import { ShaderToy } from "../shader-toy";
+import { Vector4 } from "three";
 
 export function Center({ pointData }: { pointData: any }) {
   const {
@@ -63,21 +65,23 @@ export function Center({ pointData }: { pointData: any }) {
       default:
         break;
     }
-    return { lines: _lines, points: _pts };
+    return {
+      lines: _lines.map(
+        ([pt1, pt2]: any) =>
+          new Vector4(
+            state.getPos(pt1[0], pt1[1]).x,
+            state.getPos(pt1[0], pt1[1]).y,
+
+            state.getPos(pt2[0], pt2[1]).x,
+            state.getPos(pt2[0], pt2[1]).y
+          )
+      ),
+      points: _pts,
+    };
   }, [grade, side, pointData]);
   return (
     <group>
-      {/* {lines.map(([pt1, pt2]: any, idx: number) => (
-        <Line
-          key={idx}
-          pt1={state.getPos(pt1[0], pt1[1])}
-          pt2={state.getPos(pt2[0], pt2[1])}
-        />
-      ))} */}
-
-      {points.map((point: any, index: number) => (
-        <Lines key={index} pts={point} />
-      ))}
+      <ShaderToy edges={lines} />
     </group>
   );
 }

@@ -114,7 +114,6 @@ export function Edges({ pointData }: { pointData: any }) {
       }
     }
     return {
-      // lines: _lines,
       lines: _lines.map(
         ([pt1, pt2]: any) =>
           new Vector4(
@@ -132,17 +131,7 @@ export function Edges({ pointData }: { pointData: any }) {
   console.log(lines);
   return (
     <group>
-      {/* {lines.map(([pt1, pt2]: any, idx: number) => (
-        <Line
-          key={idx}
-          pt1={state.getPos(pt1[0], pt1[1])}
-          pt2={state.getPos(pt2[0], pt2[1])}
-        />
-      ))} */}
       <ShaderToy edges={lines} />
-      {/* {points.map((point: any, index: number) => (
-        <Lines key={index} pts={point} />
-      ))} */}
     </group>
   );
 }

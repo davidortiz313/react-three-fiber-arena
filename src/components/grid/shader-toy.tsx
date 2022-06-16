@@ -26,14 +26,16 @@ export function ShaderToy({ edges }: { edges: Vector4[] }) {
     uTime: { value: 0 },
     ratio: { value: state.ratio },
     tex: { value: map },
-    edges: { value: edges },
+    edges: { value: edges.length !== 0 ? edges : [new Vector4(0, 0, 0, 0)] },
   };
   useEffect(() => {
     if (!mesh.current) return;
     (mesh.current as Mesh).material = new ShaderMaterial({
       uniforms,
       vertexShader,
-      fragmentShader: `#define lenOfEdges ${edges.length} \n ${fragmentShader}`,
+      fragmentShader: `#define lenOfEdges ${
+        edges.length !== 0 ? edges.length : 1
+      } \n ${fragmentShader}`,
       transparent: true,
     });
   }, [edges]);

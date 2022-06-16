@@ -11,6 +11,7 @@ import { useGridContext } from "../../context/project-context";
 import { Auto } from "./drawings/auto";
 import { ShaderToy } from "./shader-toy";
 import { state } from "./utils/state";
+import { Effects } from "./utils/_effects";
 
 export const Scene: React.FC = () => {
   const {
@@ -42,7 +43,7 @@ export const Scene: React.FC = () => {
       {kind === "center" && <Center pointData={data[parseInt(dataIdx!)]} />}
       {kind === "corner" && <Corner pointData={data[parseInt(dataIdx!)]} />}
       {kind === "auto" && <Auto pointData={data[parseInt(dataIdx!)]} />}
-      {/* <Effects meshRef={meshRef} /> */}
+      <Effects meshRef={meshRef} />
     </group>
   );
 };

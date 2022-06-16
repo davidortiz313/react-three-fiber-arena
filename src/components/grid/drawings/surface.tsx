@@ -3,6 +3,8 @@ import { Line } from "./line";
 import { state } from "../utils/state";
 import { useGridContext } from "../../../context/project-context";
 import { Lines } from "./lines";
+import { Vector4 } from "three";
+import { ShaderToy } from "../shader-toy";
 
 export function Surface({ pointData }: { pointData: any }) {
   const {
@@ -41,7 +43,19 @@ export function Surface({ pointData }: { pointData: any }) {
       _pts.push([state._getPos(x + w, y + h), state._getPos(x, y + h)]);
       _pts.push([state._getPos(x, y + h), state._getPos(x, y)]);
     });
-    return { lines: _lines, points: _pts };
+    return {
+      lines: _lines.map(
+        ([pt1, pt2]: any) =>
+          new Vector4(
+            state.getPos(pt1[0], pt1[1]).x,
+            state.getPos(pt1[0], pt1[1]).y,
+
+            state.getPos(pt2[0], pt2[1]).x,
+            state.getPos(pt2[0], pt2[1]).y
+          )
+      ),
+      points: _pts,
+    };
   }, [grade, side, pointData]);
   return (
     <group>
@@ -52,9 +66,10 @@ export function Surface({ pointData }: { pointData: any }) {
           pt2={state.getPos(pt2[0], pt2[1])}
         />
       ))} */}
-      {points.map((point: any, index: number) => (
+      <ShaderToy edges={lines} />
+      {/* {points.map((point: any, index: number) => (
         <Lines key={index} pts={point} />
-      ))}
+      ))} */}
     </group>
   );
 }
