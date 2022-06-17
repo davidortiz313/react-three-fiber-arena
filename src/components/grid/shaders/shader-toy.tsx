@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { Mesh, ShaderMaterial, TextureLoader, Vector4 } from "three";
 import { vertexShader } from "../shaders/vertex-shader";
 import { fragmentShader } from "../shaders/fragment-shader";
-import { state } from "./utils/state";
-import { useGridContext } from "../../context/project-context";
+import { state } from "../utils/state";
+import { useGridContext } from "../../../context/project-context";
 
 export function ShaderToy({ edges }: { edges: Vector4[] }) {
   const {
@@ -22,12 +22,16 @@ export function ShaderToy({ edges }: { edges: Vector4[] }) {
   }, [side, setMap, frontMap, backMap]);
 
   const mesh = useRef();
-  const uniforms = {
-    uTime: { value: 0 },
-    ratio: { value: state.ratio },
-    tex: { value: map },
-    edges: { value: edges.length !== 0 ? edges : [new Vector4(0, 0, 0, 0)] },
-  };
+  const uniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      ratio: { value: state.ratio },
+      tex: { value: map },
+      edges: { value: edges.length !== 0 ? edges : [new Vector4(0, 0, 0, 0)] },
+    }),
+    [edges, map]
+  );
+
   useEffect(() => {
     if (!mesh.current) return;
     (mesh.current as Mesh).material = new ShaderMaterial({
@@ -38,7 +42,8 @@ export function ShaderToy({ edges }: { edges: Vector4[] }) {
       } \n ${fragmentShader}`,
       transparent: true,
     });
-  }, [edges]);
+  }, [edges, uniforms]);
+
   useFrame((_, delta) => {
     if (!mesh.current) return;
     (mesh.current as any).material.uniforms.uTime.value += delta;

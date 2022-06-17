@@ -1,9 +1,7 @@
 import { useMemo } from "react";
-import { Line } from "./line";
 import { state } from "../utils/state";
 import { useGridContext } from "../../../context/project-context";
-import { Lines } from "./lines";
-import { ShaderToy } from "../shader-toy";
+import { ShaderToy } from "../shaders/shader-toy";
 import { Vector4 } from "three";
 
 export function Center({ pointData }: { pointData: any }) {
@@ -11,7 +9,7 @@ export function Center({ pointData }: { pointData: any }) {
     data: { grade, side },
   } = useGridContext();
 
-  const { lines, points } = useMemo(() => {
+  const { lines } = useMemo(() => {
     const _lines: any[] = [];
     const _pts: any[] = [];
     const { centering } = pointData;

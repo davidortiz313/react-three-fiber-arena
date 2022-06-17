@@ -12,6 +12,7 @@ export const Controls: React.FC = () => {
     _controls.target.set(0, 0, 0);
     _controls.enableDamping = false;
     _controls.enableRotate = false;
+    _controls.minDistance = 0.1;
     _controls.mouseButtons.LEFT = THREE.MOUSE.PAN;
     _controls.touches.ONE = THREE.TOUCH.PAN;
     state.controls = _controls;

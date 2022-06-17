@@ -1,9 +1,8 @@
 import { useMemo } from "react";
-import { Line } from "./line";
 import { state } from "../utils/state";
 import { useGridContext } from "../../../context/project-context";
 import { Vector4 } from "three";
-import { ShaderToy } from "../shader-toy";
+import { ShaderToy } from "../shaders/shader-toy";
 
 export function Corner({ pointData }: { pointData: any }) {
   const { cornerLength, ratio } = state;

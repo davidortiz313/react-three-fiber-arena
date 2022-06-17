@@ -9,9 +9,8 @@ import { Surface } from "./drawings/surface";
 import { Center } from "./drawings/center";
 import { useGridContext } from "../../context/project-context";
 import { Auto } from "./drawings/auto";
-import { ShaderToy } from "./shader-toy";
 import { state } from "./utils/state";
-import { Effects } from "./utils/_effects";
+import { Effects } from "./utils/effects";
 
 export const Scene: React.FC = () => {
   const {

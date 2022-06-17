@@ -1,12 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./scene";
-import {
-  ACESFilmicToneMapping,
-  Color,
-  sRGBEncoding,
-  WebGLRenderer,
-} from "three";
+import { ACESFilmicToneMapping, Color, sRGBEncoding } from "three";
 import "./grid.css";
 import { Controls } from "./utils/controls";
 import { CameraDefaultPos } from "./utils/camera-default-pos";

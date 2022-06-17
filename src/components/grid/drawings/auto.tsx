@@ -1,24 +1,21 @@
 import { useMemo } from "react";
-import { Line } from "./line";
 import { state } from "../utils/state";
-import { Lines } from "./lines";
 import { useGridContext } from "../../../context/project-context";
-import { ShaderToy } from "../shader-toy";
+import { ShaderToy } from "../shaders/shader-toy";
 import { Vector4 } from "three";
 
 export function Auto({ pointData }: { pointData: any }) {
   const {
-    data: { grade, side },
+    data: { side },
   } = useGridContext();
-  const { edgeOffset, ratio, edgeGap } = state;
 
-  const { lines, points } = useMemo(() => {
+  const { lines } = useMemo(() => {
     const _lines: any[] = [];
     const _pts: any[] = [];
 
     const { signature } = pointData;
 
-    signature[`${side}Labels`].map((ele: any) => {
+    signature[`${side}Labels`].forEach((ele: any) => {
       const { x, y, w, h } = ele;
       _lines.push(
         [
@@ -57,7 +54,7 @@ export function Auto({ pointData }: { pointData: any }) {
       ),
       points: _pts,
     };
-  }, [grade, side, edgeOffset, edgeGap, pointData, ratio]);
+  }, [side, pointData]);
   return (
     <group>
       <ShaderToy edges={lines} />

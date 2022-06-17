@@ -1,17 +1,15 @@
 import { useMemo } from "react";
-import { Line } from "./line";
 import { state } from "../utils/state";
 import { useGridContext } from "../../../context/project-context";
-import { Lines } from "./lines";
 import { Vector4 } from "three";
-import { ShaderToy } from "../shader-toy";
+import { ShaderToy } from "../shaders/shader-toy";
 
 export function Surface({ pointData }: { pointData: any }) {
   const {
     data: { grade, side },
   } = useGridContext();
 
-  const { lines, points } = useMemo(() => {
+  const { lines } = useMemo(() => {
     const _lines: any[] = [];
     const _pts: any[] = [];
     const { surface } = pointData;
@@ -59,17 +57,7 @@ export function Surface({ pointData }: { pointData: any }) {
   }, [grade, side, pointData]);
   return (
     <group>
-      {/* {lines.map(([pt1, pt2]: any, idx: number) => (
-        <Line
-          key={idx}
-          pt1={state.getPos(pt1[0], pt1[1])}
-          pt2={state.getPos(pt2[0], pt2[1])}
-        />
-      ))} */}
       <ShaderToy edges={lines} />
-      {/* {points.map((point: any, index: number) => (
-        <Lines key={index} pts={point} />
-      ))} */}
     </group>
   );
 }

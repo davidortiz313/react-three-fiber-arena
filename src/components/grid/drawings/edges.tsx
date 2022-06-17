@@ -1,9 +1,7 @@
 import { useMemo } from "react";
-import { Line } from "./line";
 import { state } from "../utils/state";
-import { Lines } from "./lines";
 import { useGridContext } from "../../../context/project-context";
-import { ShaderToy } from "../shader-toy";
+import { ShaderToy } from "../shaders/shader-toy";
 import { Vector4 } from "three";
 
 export function Edges({ pointData }: { pointData: any }) {
@@ -12,7 +10,7 @@ export function Edges({ pointData }: { pointData: any }) {
   } = useGridContext();
   const { edgeOffset, ratio, edgeGap } = state;
 
-  const { lines, points } = useMemo(() => {
+  const { lines } = useMemo(() => {
     const _lines: any[] = [];
     const _pts: any[] = [];
     const { edges } = pointData;
@@ -128,7 +126,6 @@ export function Edges({ pointData }: { pointData: any }) {
     };
   }, [grade, side, edgeOffset, edgeGap, pointData, ratio]);
 
-  console.log(lines);
   return (
     <group>
       <ShaderToy edges={lines} />
