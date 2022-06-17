@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import gsap from "gsap";
 import { useThree } from "@react-three/fiber";
 import { state } from "./state";
+import { isMobile } from "react-device-detect";
 
 export const CameraDefaultPos: React.FC<{
   toggle: boolean;
@@ -12,7 +13,7 @@ export const CameraDefaultPos: React.FC<{
       duration: 0.5,
       x: 0,
       y: 0,
-      z: 2.2,
+      z: isMobile ? 3.2 : 2.2,
       onUpdate: () => {
         state.controls.target.set(camera.position.x, camera.position.y, 0);
       },

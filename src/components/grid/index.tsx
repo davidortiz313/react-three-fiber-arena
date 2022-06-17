@@ -12,7 +12,6 @@ import { Controls } from "./utils/controls";
 import { CameraDefaultPos } from "./utils/camera-default-pos";
 import { state } from "./utils/state";
 import { GridContext, useGridState } from "../../context/project-context";
-
 const Grid: React.FC = () => {
   const gridState = useGridState();
   const {
