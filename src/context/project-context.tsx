@@ -14,7 +14,7 @@ import {
 
 export const GridContext = createContext<GridContextProps>({
   data: {},
-  updateData: (s: GridDataProps) => {},
+  updateData: (s: GridDataProps) => { },
 });
 export function useGridContext() {
   return useContext(GridContext);
@@ -43,7 +43,7 @@ export function useGridState(): GridContextProps {
 // Pack Anim
 export const PackAnimContext = createContext<PackAnimContextProps>({
   data: {} as PackAnimDataProps,
-  updateData: (s: Partial<PackAnimDataProps>) => {},
+  updateData: (s: Partial<PackAnimDataProps>) => { },
 });
 export const usePackAnimContext = () => {
   return useContext(PackAnimContext);
@@ -56,6 +56,7 @@ export const usePackAnimState = () => {
     idle: false,
     state: ref.current,
   });
+
   const updateData = useCallback(
     (newItem: Partial<PackAnimDataProps>) => {
       setData((prev) => ({ ...prev, ...newItem }));
